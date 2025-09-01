@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Find My Edge Backtest Extension",
+  "version": "1.0",
+  "description": "A backtesting extension for Find My Edge",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://tv.dhan.co/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://tv.dhan.co/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["https://*.dhan.co/*"],
+      "resources": ["audit.png"]
+    }
+  ]
+}

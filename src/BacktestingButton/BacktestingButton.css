@@ -1,0 +1,29 @@
+.toggle-popup-button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  margin: 1px 3px;
+  border: none;
+  background-color: inherit;
+  width: 39px;
+  height: 39px;
+}
+
+/*for app*/
+.web-app {
+  left: 90%;
+  width: 40px;
+  height: 40px;
+  top: 181px;
+}
+
+.toggle-popup-button:hover {
+  background-color: #e8eef7a1;
+}
+
+.backtest-button-img {
+  width: 25px;
+  height: 25px;
+}
