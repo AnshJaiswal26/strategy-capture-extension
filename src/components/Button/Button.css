@@ -1,0 +1,44 @@
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fill-btn,
+.hollow-btn {
+  background-color: #ffffff;
+  color: #1e53e5;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  border: 1px solid #1e53e5;
+  display: flex;
+}
+
+.fill-btn:hover,
+.hollow-btn:hover {
+  color: #ffffff;
+  background-color: #1e53e5;
+  border: 1px solid #1e53e5;
+}
+
+.fill-btn {
+  background-color: #2962ff;
+  color: white;
+  border: none;
+  border: 1px solid #2962ff;
+}
+
+.fill-btn.medium,
+.hollow-btn.medium {
+  padding: 4px 10px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+.fill-btn.small,
+.hollow-btn.small {
+  padding: 2px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}

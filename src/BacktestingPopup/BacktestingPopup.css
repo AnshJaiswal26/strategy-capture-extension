@@ -1,5 +1,5 @@
 .backtesting-popup-content::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
   height: 15px;
 }
 
@@ -19,19 +19,18 @@
 }
 
 .backtesting-popup-content::-webkit-scrollbar-button {
-  display: none; /* or style them if you want arrows */
+  display: none;
 }
 
 button {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-
   box-sizing: border-box;
 }
 
 .backtesting-popup {
   position: fixed;
-  width: 380px;
+  width: 475px;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -44,6 +43,7 @@ button {
     "Lucida Sans", Arial, sans-serif;
 }
 
+/* Header */
 .backtesting-popup-header-wrapper {
   padding: 0px 20px;
 }
@@ -88,17 +88,24 @@ button {
   background: #e2ebf38b;
 }
 
+/* Content */
 .backtesting-popup-content {
+  display: flex;
+  flex-direction: column;
   padding: 16px 20px;
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 330px;
+  min-height: 100px;
+  overflow: auto;
 }
 
 .backtesting-popup-content-grid {
   display: grid;
-  grid-template-columns: repeat(2, 100px);
+  grid-template-columns: 80px 100px 145px 35px;
+  gap: 0px 20px;
+  box-sizing: border-box;
 }
 
+/* Tab Selector */
 .backtesting-popup-content-tab-selector {
   width: 100%;
   font-size: 13px;
@@ -147,6 +154,10 @@ button {
   color: #5b5b5b;
 }
 
+.backtesting-popup-content-tab-track-container .tab.active {
+  pointer-events: none;
+}
+
 .active-tab-indicator {
   position: absolute;
   background: black;
@@ -157,60 +168,13 @@ button {
   transition: transform 0.1s ease, width 0.1s ease;
 }
 
-.backtesting-popup-label-wrapper {
-  display: flex;
-  margin-bottom: 3px;
-  font-weight: normal;
-  font-size: 13px;
+.default-mappings {
+  min-width: 120px;
   text-align: left;
-  color: black;
-}
-
-.backtesting-popup-label-wrapper label {
-  display: flex;
-  padding: 8px 20px 8px 0px;
-  font-weight: normal;
-  align-items: center;
-  font-size: 13px;
-  text-align: left;
-  color: black;
-}
-
-.backtesting-popup-input-wrapper {
-  padding: 8px 0px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.backtesting-popup-input {
-  width: 100%;
-  max-width: 100px;
+  pointer-events: none;
+  color: #5b5b5b;
+  background-color: #ebebeb;
   box-sizing: border-box;
-  background-color: #ffffff;
-  color: black;
-  padding: 8px 2px 8px 8px;
-  font-size: 13px;
-  font-weight: 400;
-  border-radius: 7px;
-  outline: none;
-  border: 1px solid #ccc;
-}
-
-.backtesting-popup-input-div {
-  border: 2px solid #ffffff;
-  border-radius: 9px;
-}
-
-.backtesting-popup-input:hover {
-  border: 1px solid #a0a0a0;
-}
-
-.backtesting-popup-input:focus {
-  border: 1px solid #ffffff;
-}
-.backtesting-popup-input-div:focus-within {
-  border: 2px solid #0b5ef9;
 }
 
 .backtesting-popup-footer-wrapper {
@@ -228,30 +192,74 @@ button {
   gap: 15px;
 }
 
-.backtesting-popup-save-btn,
-.backtesting-popup-clear-btn {
-  padding: 4px 10px;
-  background-color: #ffffff;
-  color: #1e53e5;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #1e53e5;
+.filler {
+  flex: 1;
+  z-index: -1;
+}
+
+.no-input-found {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 14px;
+  margin-top: 20px;
+  color: #5b5b5b;
 }
 
-.backtesting-popup-save-btn:hover,
-.backtesting-popup-clear-btn:hover {
-  color: #ffffff;
-  background-color: #1e53e5;
-  border: 1px solid #1e53e5;
+.input-creater-wrapper {
+  flex: 1;
+  border-radius: 4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f2ecec7b;
 }
 
-.backtesting-popup-save-btn {
-  background-color: #2962ff;
-  color: white;
-  border: none;
-  border: 1px solid #2962ff;
+.input-creater {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.input-creater-wrapper:hover {
+  background-color: #ececec;
+}
+
+.input-creater div:first-child {
+  display: flex;
+  gap: 10px;
+}
+
+.input-creater-wrapper .title,
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.input-creater-row-wrapper {
+  transition: all ease-in-out 0.1s;
+}
+
+.input-creater-row-wrapper.expand {
+  display: grid;
+  grid-template-columns: 2fr 1fr 80px;
+  margin: 10px 0px;
+}
+
+.input-creater-row-wrapper .row-input {
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  padding: 0px 10px;
+  box-sizing: border-box;
+}
+
+.row-input label {
+  font-size: 14px;
 }

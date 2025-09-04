@@ -1,3 +1,5 @@
+@import url("../components/InfoTooltip/InfoTooltip.css");
+
 .toggle-popup-button {
   align-items: center;
   display: flex;

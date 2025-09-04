@@ -1,18 +1,36 @@
 import { create } from "zustand";
+import { popupUIUpdater } from "../utils/updaters";
 
 const getKeysToUpdate = (prev, updates) => {
   const keysToUpdate = {};
+
   for (const key in updates) {
     if (prev[key] !== updates[key]) keysToUpdate[key] = updates[key];
   }
   return Object.keys(keysToUpdate).length > 0 ? keysToUpdate : null;
 };
 
+const commonUpdater = (prev, section, update) => {
+  const keysToUpdate = getKeysToUpdate(prev.popupUI, update);
+  if (!keysToUpdate) return prev;
+  return {
+    [section]: {
+      ...prev[section],
+      ...keysToUpdate,
+    },
+  };
+};
+
 export const useExtensionStore = create((set) => ({
   popupUI: {
-    isPopupOpen: false,
+    isPopupOpen: true,
     isDragging: false,
     activeTab: "",
+    isCaptureMapExpanded: false,
+    captureMap: [],
+    addOptions: [],
+    inputCreaterLabel: "",
+    inputCreaterType: "Input",
   },
 
   tooltipUI: {
@@ -22,26 +40,11 @@ export const useExtensionStore = create((set) => ({
   },
 
   updateTooltipUI: (update) =>
-    set((prev) => {
-      const keysToUpdate = getKeysToUpdate(prev, update);
-      if (!keysToUpdate) return prev;
-      return {
-        tooltipUI: {
-          ...prev.tooltipUI,
-          ...keysToUpdate,
-        },
-      };
-    }),
+    set((prev) => commonUpdater(prev, "tooltipUI", update)),
 
   updatePopupUI: (update) =>
-    set((prev) => {
-      const keysToUpdate = getKeysToUpdate(prev, update);
-      if (!keysToUpdate) return prev;
-      return {
-        popupUI: {
-          ...prev.popupUI,
-          ...keysToUpdate,
-        },
-      };
-    }),
+    set((prev) => commonUpdater(prev, "popupUI", update)),
+
+  updatePopupUIBatch: (sectionUpdates) =>
+    set((prev) => popupUIUpdater(prev, sectionUpdates)),
 }));

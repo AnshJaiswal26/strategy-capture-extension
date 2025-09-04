@@ -2,7 +2,10 @@ import { createElement, useEffect, useRef, useState } from "react";
 import { useExtensionStore } from "../stores/useExtensionStore";
 import { injectElementStyle } from "../utils/injectElementStyles";
 import "./BacktestingButton.css";
-import cssText from "./BacktestingButton.css?raw";
+import buttonCss from "./BacktestingButton.css?raw";
+import tooltipCss from "../components/InfoTooltip/InfoTooltip.css?raw";
+
+const cssText = `${buttonCss}\n${tooltipCss}`;
 
 export default function BacktestButton({ _IS_EXTENSION_BUILD_ = false }) {
   const hoverTimeOutRef = useRef();

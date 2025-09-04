@@ -1,0 +1,54 @@
+.backtesting-popup-input-wrapper {
+  padding: 8px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.backtesting-popup-input-div {
+  border: 1px solid #ccc;
+  border-radius: 7px;
+}
+
+.backtesting-popup-input-div select {
+  padding: 7px 2px 7px 8px;
+  width: fit-content;
+  max-width: 240px;
+  box-sizing: border-box;
+}
+
+.backtesting-popup-input-div:hover {
+  border: 1px solid #a0a0a0;
+}
+
+.backtesting-popup-input-div:focus-within {
+  border: 1px solid #ffffff;
+}
+
+.backtesting-popup-input {
+  width: 100%;
+  max-width: 100px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: black;
+  padding: 5px 2px 5px 8px;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 7px;
+  outline: none;
+  border: 2px solid #ffffff;
+}
+
+.backtesting-popup-input:focus {
+  border: 2px solid #0b5ef9;
+}
+
+input[type="time"] {
+  color-scheme: light;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  padding: 0px 2px 0px 0px;
+}

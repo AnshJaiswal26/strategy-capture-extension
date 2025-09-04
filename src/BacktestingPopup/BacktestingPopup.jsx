@@ -18,14 +18,28 @@ export default function BacktestingPopup() {
       }}
     >
       <Header updatePopupUI={updatePopupUI} popupRef={popupRef} />
-      <TabSelector tabs={["Recent", "All"]} updatePopupUI={updatePopupUI} />
+      <TabSelector
+        tabs={["Recent", "All Captures"]}
+        updatePopupUI={updatePopupUI}
+      />
       <Content
         inputArray={[
-          ["Time", 0],
-          ["Time Frame", 0],
-          ["Pnl", 0],
-          ["Risk/Reward", 0],
-          ["Strategy", 0],
+          { label: "Time", value: 0, type: "time" },
+          { label: "Time Frame", value: 0, type: "input" },
+          { label: "Pnl", value: 0, type: "input" },
+          { label: "Risk/Reward", value: 0, type: "input" },
+          {
+            label: "Entry Candle",
+            value: 0,
+            options: ["Engulfing", "Spinning Top", "Pin Bar"],
+            type: "dropdown",
+          },
+          {
+            label: "Strategy",
+            value: 0,
+            options: ["Breakout", "9 & 15 EMA 1st Pullback"],
+            type: "dropdown",
+          },
         ]}
       />
       <Footer />

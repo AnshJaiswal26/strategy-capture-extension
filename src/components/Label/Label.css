@@ -1,0 +1,28 @@
+.backtesting-popup-label-wrapper {
+  display: flex;
+  margin-bottom: 3px;
+  font-weight: normal;
+  font-size: 13px;
+  text-align: left;
+  color: black;
+  box-sizing: border-box;
+}
+
+.backtesting-popup-label-wrapper label {
+  display: flex;
+  padding: 8px 0px 8px 0px;
+  font-weight: normal;
+  align-items: center;
+  font-size: 13px;
+  text-align: left;
+  color: black;
+  box-sizing: border-box;
+}
+
+.backtesting-popup-label-wrapper.header label {
+  margin-bottom: 0px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgb(149, 149, 149);
+  box-sizing: border-box;
+}
