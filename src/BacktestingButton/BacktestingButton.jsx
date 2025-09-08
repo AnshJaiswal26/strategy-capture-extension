@@ -1,6 +1,6 @@
 import { createElement, useEffect, useRef, useState } from "react";
-import { useExtensionStore } from "../stores/useExtensionStore";
-import { injectElementStyle } from "../utils/injectElementStyles";
+import { useExtensionStore } from "@store";
+import { injectElementStyle } from "@utils";
 import "./BacktestingButton.css";
 import buttonCss from "./BacktestingButton.css?raw";
 import tooltipCss from "../components/InfoTooltip/InfoTooltip.css?raw";

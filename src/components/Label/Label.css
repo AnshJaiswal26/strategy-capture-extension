@@ -1,5 +1,6 @@
 .backtesting-popup-label-wrapper {
   display: flex;
+  min-width: 40px;
   margin-bottom: 3px;
   font-weight: normal;
   font-size: 13px;

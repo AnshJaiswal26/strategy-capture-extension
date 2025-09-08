@@ -38,7 +38,7 @@ button {
   user-select: none;
   pointer-events: auto;
   top: 45px;
-  left: 680px;
+  left: 380px;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
@@ -100,8 +100,8 @@ button {
 
 .backtesting-popup-content-grid {
   display: grid;
-  grid-template-columns: 80px 100px 145px 35px;
-  gap: 0px 20px;
+  grid-template-columns: 80px 120px 145px 35px;
+  gap: 0px 15px;
   box-sizing: border-box;
 }
 
@@ -168,35 +168,19 @@ button {
   transition: transform 0.1s ease, width 0.1s ease;
 }
 
-.default-mappings {
-  min-width: 120px;
-  text-align: left;
-  pointer-events: none;
-  color: #5b5b5b;
-  background-color: #ebebeb;
-  box-sizing: border-box;
-}
-
-.backtesting-popup-footer-wrapper {
-  padding: 16px 20px;
-  border-top: 1px solid #e3e3e3;
-}
-
-.backtesting-popup-footer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.backtesting-popup-footer-btn-wrapper {
-  display: flex;
+/* Account Size and Risk  */
+.account-size-and-risk-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
+  margin-bottom: 10px;
 }
 
-.filler {
-  flex: 1;
-  z-index: -1;
+.account-size-and-risk-wrapper input {
+  width: 100%;
 }
 
+/* Creater */
 .no-input-found {
   display: flex;
   align-items: center;
@@ -210,12 +194,13 @@ button {
 .input-creater-wrapper {
   flex: 1;
   border-radius: 4px;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #f2ecec7b;
+  background-color: #f2faffe5;
+  border: 1px solid #d3eeffe5;
 }
 
 .input-creater {
@@ -225,13 +210,9 @@ button {
   cursor: pointer;
 }
 
-.input-creater-wrapper:hover {
-  background-color: #ececec;
-}
-
-.input-creater div:first-child {
+.input-creater div:last-child {
   display: flex;
-  gap: 10px;
+  align-items: center;
 }
 
 .input-creater-wrapper .title,
@@ -248,7 +229,7 @@ button {
 
 .input-creater-row-wrapper.expand {
   display: grid;
-  grid-template-columns: 2fr 1fr 80px;
+  grid-template-columns: 1fr 1fr 100px;
   margin: 10px 0px;
 }
 
@@ -260,6 +241,24 @@ button {
   box-sizing: border-box;
 }
 
-.row-input label {
-  font-size: 14px;
+/* Footer */
+.backtesting-popup-footer-wrapper {
+  padding: 16px 20px;
+  border-top: 1px solid #e3e3e3;
+}
+
+.backtesting-popup-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.backtesting-popup-footer-btn-wrapper {
+  display: flex;
+  gap: 15px;
+}
+
+/* Other */
+.filler {
+  flex: 1;
+  z-index: -1;
 }

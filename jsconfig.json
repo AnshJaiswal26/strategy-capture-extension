@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@components": ["components"],
+      "@store": ["stores/useExtensionStore"],
+      "@utils": ["utils"],
+      "@data": ["data"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

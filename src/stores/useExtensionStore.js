@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { popupUIUpdater } from "../utils/updaters";
+import { popupUIUpdater } from "@utils";
+import { demoContent } from "@data";
 
 const getKeysToUpdate = (prev, updates) => {
   const keysToUpdate = {};
@@ -26,9 +27,12 @@ export const useExtensionStore = create((set) => ({
     isPopupOpen: true,
     isDragging: false,
     activeTab: "",
+    accountSize: 0,
+    riskPercent: 0,
+    riskAmount: 0,
     isCaptureMapExpanded: false,
-    captureMap: [],
-    addOptions: [],
+    captureMap: demoContent,
+    addOptions: [""],
     inputCreaterLabel: "",
     inputCreaterType: "Input",
   },

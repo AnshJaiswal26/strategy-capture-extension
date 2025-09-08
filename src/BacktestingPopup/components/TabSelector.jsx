@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { useExtensionStore } from "../../stores/useExtensionStore";
+import { useExtensionStore } from "@store";
 
 export default function TabSelector({ tabs, updatePopupUI }) {
   const prevI = useRef(0);

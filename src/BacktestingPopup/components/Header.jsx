@@ -13,8 +13,8 @@ export default function Header({ updatePopupUI, popupRef }) {
 
   const handleMouseUp = () => {
     isDragging.current = false;
-    window.top.removeEventListener("mousemove", handleMouseMove);
-    window.top.removeEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
   };
 
   const handleMouseDown = (e) => {
@@ -25,8 +25,8 @@ export default function Header({ updatePopupUI, popupRef }) {
     initial.current.y = e.clientY - rect.top;
     isDragging.current = true;
 
-    window.top.addEventListener("mousemove", handleMouseMove);
-    window.top.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
   };
 
   return (

@@ -1,52 +1,47 @@
-import { useExtensionStore } from "../../stores/useExtensionStore";
+import { useExtensionStore } from "@store";
 import "./Input.css";
 
-export default function Input({ type, field, options, onChange, placeholder }) {
-  const value = useExtensionStore((s) => s.popupUI[field]);
-
-  const getInput = () => {
-    switch (type) {
-      case "input":
-        return (
-          <input
-            type="text"
-            className="backtesting-popup-input"
-            required
-            placeholder={placeholder ?? ""}
-            value={value}
-            onChange={(e) => (onChange ? onChange(e.target.value) : null)}
-          />
-        );
-
-      case "time":
-        return (
-          <input
-            type="time"
-            className="backtesting-popup-input"
-            required
-            onChange={(e) => (onChange ? onChange(e.target.value) : null)}
-          />
-        );
-      case "dropdown":
-        return (
-          <select
-            className="backtesting-popup-input"
-            onChange={(e) => (onChange ? onChange(e.target.value) : null)}
-            value={value}
-          >
-            {options.map((option, index) => (
-              <option key={index}>{option}</option>
-            ))}
-          </select>
-        );
-    }
-  };
+function Input({ label, type, options, selector, onChange, placeholder }) {
+  const value =
+    typeof selector === "function" ? useExtensionStore(selector) : selector;
 
   return (
     <>
       <div className="backtesting-popup-input-wrapper">
-        <div className="backtesting-popup-input-div">{getInput()}</div>
+        {label && (
+          <div className="input-label-wrapper">
+            <div>
+              <label>{label}</label>
+            </div>
+          </div>
+        )}
+
+        <div className="backtesting-popup-input-div">
+          {type === "dropdown" ? (
+            <select
+              className="backtesting-popup-input"
+              onChange={(e) => (onChange ? onChange(e.target.value) : null)}
+              value={value}
+            >
+              {options.map((option, index) => (
+                <option key={index}>{option}</option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type={type ?? "text"}
+              className="backtesting-popup-input"
+              required
+              step={type === "time" ? 1 : ""}
+              placeholder={placeholder}
+              value={value}
+              onChange={(e) => (onChange ? onChange(e.target.value) : null)}
+            />
+          )}
+        </div>
       </div>
     </>
   );
 }
+
+export default Input;

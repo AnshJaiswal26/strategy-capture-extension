@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { useExtensionStore } from "../stores/useExtensionStore";
-import "./BacktestingPopup.css";
+import { useExtensionStore } from "@store";
 import { Header, TabSelector, Content, Footer } from "./components/index";
+import "./BacktestingPopup.css";
 
 export default function BacktestingPopup() {
   const popupRef = useRef(null);
@@ -25,6 +25,7 @@ export default function BacktestingPopup() {
       <Content
         inputArray={[
           { label: "Time", value: 0, type: "time" },
+          { label: "Date", value: 0, type: "date" },
           { label: "Time Frame", value: 0, type: "input" },
           { label: "Pnl", value: 0, type: "input" },
           { label: "Risk/Reward", value: 0, type: "input" },

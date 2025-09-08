@@ -1,19 +1,25 @@
 export const singleValueUpdater = (prevPopupUI, name, newVal) => {
   const prevVal = prevPopupUI[name];
   if (prevVal === newVal) return null;
+  console.log(newVal);
   return newVal;
 };
 
-export const arrayUpdater = (prevPopupUI, name, update, operation) => {
+export const arrayUpdater = (prevPopupUI, name, update, operation, index) => {
   const prevArray = prevPopupUI[name];
   const updatedArray =
     operation === "delete"
-      ? prevArray.filter((record) => {
-          name === "captureMap"
-            ? record.label !== update.label
-            : record !== update;
-        })
-      : [...prevArray, update];
+      ? prevArray.filter((_, i) => i !== index)
+      : operation === "add"
+      ? [...prevArray, update]
+      : prevArray.map((record, i) =>
+          i === index
+            ? name === "captureMap"
+              ? { ...record, ...update }
+              : update
+            : record
+        );
+  console.log(updatedArray);
   return updatedArray;
 };
 
@@ -31,14 +37,14 @@ export const updaterMap = {
 export const popupUIUpdater = (prev, sectionUpdates) => {
   const newUpdate = {};
   const prevPopupUI = prev.popupUI;
-  for (const [name, update, operation] of sectionUpdates) {
+  for (const [name, update, operation, index] of sectionUpdates) {
     const updater = updaterMap[name];
     if (!updater) continue;
-    const result = updater(prevPopupUI, name, update, operation);
+    const result = updater(prevPopupUI, name, update, operation, index);
 
     if (!result) return prev;
     newUpdate[name] = result;
   }
 
-  return newUpdate;
+  return { popupUI: { ...prevPopupUI, ...newUpdate } };
 };
