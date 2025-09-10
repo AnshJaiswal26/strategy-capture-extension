@@ -249,7 +249,7 @@ button {
 
 .backtesting-popup-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .backtesting-popup-footer-btn-wrapper {

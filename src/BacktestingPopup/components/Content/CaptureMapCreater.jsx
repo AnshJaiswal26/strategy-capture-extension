@@ -2,8 +2,7 @@ import { Fragment, useCallback } from "react";
 import { ChevronDown, ChevronUp, Trash } from "lucide-react";
 import { useExtensionStore } from "@store";
 import { Input, Button } from "@components";
-import { repeatElement } from "@utils";
-import { mapping } from "@data";
+import { createInput, repeatElement } from "@utils";
 
 export default function CaptureMapCreater() {
   const isCaptureMapExpanded = useExtensionStore(
@@ -82,26 +81,6 @@ function AddButton() {
   const isOptionsLengthZero = isNoOption && isDropdown;
   const isOptionEmpty = isAnyOptionEmpty && isDropdown;
 
-  const updatePopupUIFromStore = useCallback((action) => {
-    const popupUI = useExtensionStore.getState().popupUI;
-    const label = popupUI.inputCreaterLabel;
-    const type = popupUI.inputCreaterType.toLowerCase();
-    const mappingKey = mapping.keys.includes(label) ? label : "None";
-    updatePopupUIBatch([
-      [
-        "captureMap",
-        {
-          label,
-          type,
-          ...(type === "dropdown" && { options: popupUI.addOptions }),
-          value: 0,
-          mappingKey: mappingKey,
-        },
-        action,
-      ],
-    ]);
-  }, []);
-
   return (
     <>
       <Button
@@ -118,7 +97,7 @@ function AddButton() {
             : ""
         }
         disable={isOptionsLengthZero || isLabelEmpty || isOptionEmpty}
-        onClick={() => updatePopupUIFromStore("add")}
+        onClick={() => createInput("add", updatePopupUIBatch)}
       />
       <Options
         updatePopupUIBatch={updatePopupUIBatch}

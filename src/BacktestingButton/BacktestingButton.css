@@ -1,5 +1,3 @@
-@import url("../components/InfoTooltip/InfoTooltip.css");
-
 .toggle-popup-button {
   align-items: center;
   display: flex;
@@ -11,6 +9,23 @@
   background-color: inherit;
   width: 39px;
   height: 39px;
+}
+
+.toggle-popup-button.active {
+  background-color: #e3effd;
+}
+.toggle-popup-button.active:hover {
+  background-color: #bbd9fb;
+}
+
+.toggle-popup-button.active img {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(5000%)
+    hue-rotate(206deg);
+}
+
+.toggle-popup-button.active:hover img {
+  filter: brightness(0) saturate(100%) invert(10%) sepia(100%) saturate(5000%)
+    hue-rotate(206deg);
 }
 
 /*for app*/

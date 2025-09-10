@@ -12,6 +12,10 @@ export const arrayUpdater = (prevPopupUI, name, update, operation, index) => {
       ? prevArray.filter((_, i) => i !== index)
       : operation === "add"
       ? [...prevArray, update]
+      : Array.isArray(update)
+      ? prevArray.map((record, i) =>
+          update[i].value ? { ...record, ...update[i] } : record
+        )
       : prevArray.map((record, i) =>
           i === index
             ? name === "captureMap"
@@ -19,7 +23,9 @@ export const arrayUpdater = (prevPopupUI, name, update, operation, index) => {
               : update
             : record
         );
+
   console.log(updatedArray);
+
   return updatedArray;
 };
 
@@ -37,7 +43,7 @@ export const updaterMap = {
 export const popupUIUpdater = (prev, sectionUpdates) => {
   const newUpdate = {};
   const prevPopupUI = prev.popupUI;
-  for (const [name, update, operation, index] of sectionUpdates) {
+  for (const [name, update, operation, index, inBatch] of sectionUpdates) {
     const updater = updaterMap[name];
     if (!updater) continue;
     const result = updater(prevPopupUI, name, update, operation, index);

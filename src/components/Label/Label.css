@@ -1,7 +1,7 @@
 .backtesting-popup-label-wrapper {
   display: flex;
+  align-items: center !important;
   min-width: 40px;
-  margin-bottom: 3px;
   font-weight: normal;
   font-size: 13px;
   text-align: left;
@@ -9,9 +9,9 @@
   box-sizing: border-box;
 }
 
-.backtesting-popup-label-wrapper label {
+.backtesting-popup-label-wrapper span {
   display: flex;
-  padding: 8px 0px 8px 0px;
+  padding: 8px 0px;
   font-weight: normal;
   align-items: center;
   font-size: 13px;
@@ -20,7 +20,7 @@
   box-sizing: border-box;
 }
 
-.backtesting-popup-label-wrapper.header label {
+.backtesting-popup-label-wrapper.header span {
   margin-bottom: 0px;
   margin-top: 10px;
   font-size: 13px;

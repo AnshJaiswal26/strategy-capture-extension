@@ -1,13 +1,19 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useExtensionStore } from "@store";
 import { Header, TabSelector, Content, Footer } from "./components/index";
 import "./BacktestingPopup.css";
+import { initWorker } from "@utils";
 
 export default function BacktestingPopup() {
   const popupRef = useRef(null);
 
   const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
   const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
+
+  useEffect(() => {
+    const initializeWorkers = async () => await initWorker();
+    initializeWorkers();
+  }, []);
 
   return (
     <div

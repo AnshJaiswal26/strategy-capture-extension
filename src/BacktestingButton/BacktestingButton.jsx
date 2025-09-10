@@ -1,31 +1,21 @@
-import { createElement, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useExtensionStore } from "@store";
-import { injectElementStyle } from "@utils";
 import "./BacktestingButton.css";
-import buttonCss from "./BacktestingButton.css?raw";
-import tooltipCss from "../components/InfoTooltip/InfoTooltip.css?raw";
-
-const cssText = `${buttonCss}\n${tooltipCss}`;
 
 export default function BacktestButton({ _IS_EXTENSION_BUILD_ = false }) {
   const hoverTimeOutRef = useRef();
-  const buttonRef = useRef();
   const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
   const updateTooltipUI = useExtensionStore((s) => s.updateTooltipUI);
-
-  useEffect(() => {
-    if (_IS_EXTENSION_BUILD_) injectElementStyle(cssText);
-    const buttonRect = buttonRef.current.getBoundingClientRect();
-
-    updateTooltipUI({
-      positionX: buttonRect.left - 145,
-      positionY: buttonRect.height / 2 + buttonRect.top,
-    });
-  }, []);
+  const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
 
   const handleMouseEnter = (e) => {
     hoverTimeOutRef.current = setTimeout(() => {
-      updateTooltipUI({ isVisible: true });
+      const buttonRect = e.target.getBoundingClientRect();
+      updateTooltipUI({
+        isVisible: true,
+        positionX: buttonRect.left - 145,
+        positionY: buttonRect.height / 2 + buttonRect.top,
+      });
     }, 400);
   };
 
@@ -36,9 +26,10 @@ export default function BacktestButton({ _IS_EXTENSION_BUILD_ = false }) {
 
   return (
     <button
-      ref={buttonRef}
-      className={`toggle-popup-button ${_IS_EXTENSION_BUILD_ ? "" : "web-app"}`}
-      onClick={() => updatePopupUI({ isPopupOpen: true })}
+      className={`toggle-popup-button ${isPopupOpen ? "active" : ""} ${
+        _IS_EXTENSION_BUILD_ ? "" : "web-app"
+      }`}
+      onClick={() => updatePopupUI({ isPopupOpen: !isPopupOpen })}
       onMouseEnter={(e) => handleMouseEnter(e)}
       onMouseLeave={handleMouseLeave}
     >

@@ -17,7 +17,7 @@ export const mapping = {
     Date: "date",
     Day: "text",
     "Time Frame": "text",
-    "Risk/Reward": "number",
+    "Risk/Reward": "text",
     Pnl: "number",
     "Cummulative Pnl": "number",
     "Trade Number": "text",
@@ -36,7 +36,7 @@ export const demoContent = [
     mappingKey: "Trade Number",
   },
   { label: "Result", type: "text", value: "Target", mappingKey: "Result" },
-  { label: "Risk/Reward", type: "number", value: 2, mappingKey: "Risk/Reward" },
+  { label: "Risk/Reward", type: "text", value: 2, mappingKey: "Risk/Reward" },
   {
     label: "Entry Candle",
     type: "dropdown",

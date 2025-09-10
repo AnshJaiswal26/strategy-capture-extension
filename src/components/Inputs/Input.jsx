@@ -11,7 +11,7 @@ function Input({ label, type, options, selector, onChange, placeholder }) {
         {label && (
           <div className="input-label-wrapper">
             <div>
-              <label>{label}</label>
+              <span>{label}</span>
             </div>
           </div>
         )}

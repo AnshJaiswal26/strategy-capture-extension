@@ -24,12 +24,12 @@ const commonUpdater = (prev, section, update) => {
 
 export const useExtensionStore = create((set) => ({
   popupUI: {
-    isPopupOpen: true,
+    isPopupOpen: false,
     isDragging: false,
     activeTab: "",
     accountSize: 0,
     riskPercent: 0,
-    riskAmount: 0,
+    riskAmount: 300,
     isCaptureMapExpanded: false,
     captureMap: demoContent,
     addOptions: [""],

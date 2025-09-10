@@ -1,13 +1,12 @@
-export { extractText } from "./canvasToText";
+export { extractTextAndSync } from "./canvasToText";
 export { repeatElement } from "./arrayHelpers";
-export { injectElementStyle } from "./injectElementStyles";
 export {
   injectButtonAndTooltipInDom,
   injectElementInDom,
-} from "./injectElementsInDom";
+  injectElementStyle,
+  readCanvasAndSync,
+} from "./domUtils";
 export { popupUIUpdater } from "./updaters";
-export {
-  extractTimeDateAndDay,
-  extractPriceAndCalculateRR,
-} from "./extracters";
+export { extractPriceAndTime, extractPriceAndCalculateRR } from "./extracters";
 export { initWorker } from "./initializeWorker";
+export { createInput, preProcessCanvasForOCR } from "./creaters";

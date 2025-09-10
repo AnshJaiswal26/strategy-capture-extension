@@ -28,6 +28,7 @@ export default defineConfig({
       "@store": path.resolve(__dirname, "src/stores/useExtensionStore"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@data": path.resolve(__dirname, "src/data"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
     },
   },
 });
