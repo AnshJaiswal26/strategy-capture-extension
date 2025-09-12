@@ -1,5 +1,3 @@
-import { useExtensionStore } from "@store";
-
 const days = {
   Mon: "Monday",
   Tue: "Tuesday",
@@ -23,18 +21,10 @@ const monthMap = {
   Dec: 11,
 };
 
-export const extractPriceAndCalculateRR = (
-  text,
-  position = "Long",
-  result = "profit"
-) => {
-  const cleaned = text.split("\n");
-  const prices = cleaned.map((v) => v.replace(/[,\[\]\(\)]/g, ""));
-
-  const isLong = position === "Long";
-  const target = isLong ? Number(prices[0]) : Number(prices[2]);
-  const entry = Number(prices[1]);
-  const stopLoss = isLong ? Number(prices[2]) : Number(prices[0]);
+export const extractPriceResults = (prices, result = "profit") => {
+  const [entry, target, stopLoss] = prices.map((v) =>
+    Number(v.replace(",", ""))
+  );
 
   const parse = (v) => Number(parseFloat(v).toFixed(2));
 
@@ -54,16 +44,10 @@ export const extractPriceAndCalculateRR = (
   };
 };
 
-export const extractPriceAndTime = (priceText, dateTimeText) => {
+export const extractTimeResults = (timeText) => {
   const regex =
-    /(?<day>[A-Z]{3})\s*(?<date>\d{1,2})\s*(?<month>[A-Z]{3})\s*(?<year>\d{2,4})\s*(?<time>\d{2}:\d{2})/gi;
-  // const matches = [...dateTimeText.matchAll(regex)];
-
-  const matches = [...dateTimeText.matchAll(regex)];
-  if (matches.length > 0 && matches[0].groups) {
-    const { day, date, month, year, time } = matches[0].groups;
-    console.log({ day, date, month, year, time });
-  }
+    /(?<day>[A-Z]{2,3})\s*(?<date>\d{1,2})\s*(?<month>[A-Z]{3})\s*(?<year>\d{2,4})\s*(?<time>\d{2}:\d{2})/gi;
+  const matches = [...timeText.matchAll(regex)];
 
   const { date, month, year, day, time } = matches[0].groups;
 
@@ -72,9 +56,5 @@ export const extractPriceAndTime = (priceText, dateTimeText) => {
   );
   const isoDate = dateFormat.toISOString().slice(0, 10);
 
-  const priceData = extractPriceAndCalculateRR(priceText);
-
-  console.log({ Date: isoDate, Day: days[day], Time: time, ...priceData });
-
-  return { Date: isoDate, Day: days[day], Time: time, ...priceData };
+  return { Date: isoDate, Day: days[day], Time: time };
 };

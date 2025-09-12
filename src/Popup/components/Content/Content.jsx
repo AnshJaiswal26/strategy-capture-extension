@@ -4,7 +4,7 @@ import { useExtensionStore } from "@store";
 import CaptureMapCreater from "./CaptureMapCreater";
 import InputGrid from "./InputGrid";
 
-export default function Content({ inputArray }) {
+export default function Content() {
   const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
   const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
   const isLengthZero = useExtensionStore(

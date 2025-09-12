@@ -5,6 +5,7 @@
   "description": "A backtesting extension for Find My Edge",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["https://tv.dhan.co/*"],
+
   "content_scripts": [
     {
       "matches": ["https://tv.dhan.co/*"],

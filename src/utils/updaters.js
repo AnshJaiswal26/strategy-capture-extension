@@ -1,7 +1,6 @@
 export const singleValueUpdater = (prevPopupUI, name, newVal) => {
   const prevVal = prevPopupUI[name];
   if (prevVal === newVal) return null;
-  console.log(newVal);
   return newVal;
 };
 
@@ -24,7 +23,7 @@ export const arrayUpdater = (prevPopupUI, name, update, operation, index) => {
             : record
         );
 
-  console.log(updatedArray);
+  // console.log(updatedArray);
 
   return updatedArray;
 };
@@ -43,7 +42,7 @@ export const updaterMap = {
 export const popupUIUpdater = (prev, sectionUpdates) => {
   const newUpdate = {};
   const prevPopupUI = prev.popupUI;
-  for (const [name, update, operation, index, inBatch] of sectionUpdates) {
+  for (const [name, update, operation, index] of sectionUpdates) {
     const updater = updaterMap[name];
     if (!updater) continue;
     const result = updater(prevPopupUI, name, update, operation, index);

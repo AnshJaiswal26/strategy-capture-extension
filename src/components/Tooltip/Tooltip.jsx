@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useExtensionStore } from "../../stores/useExtensionStore";
-import "./InfoTooltip.css";
+import "./Tooltip.css";
 
-export default function InfoTooltip({ title, position = "top" }) {
+export default function Tooltip({ title, position = "top" }) {
   const isVisible = useExtensionStore((s) => s.tooltipUI.isVisible);
   const positionX = useExtensionStore((s) => s.tooltipUI.positionX);
   const positionY = useExtensionStore((s) => s.tooltipUI.positionY);

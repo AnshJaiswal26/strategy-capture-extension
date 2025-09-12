@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import BacktestingPopup from "./BacktestingPopup/BacktestingPopup";
-import BacktestButton from "./backtestingButton/BacktestingButton";
-import InfoTooltip from "./components/InfoTooltip/InfoTooltip";
+import BacktestingPopup from "./Popup/Popup";
+import BacktestButton from "./PopupToggleButton/PopupToggleButton";
+import InfoTooltip from "./components/Tooltip/Tooltip";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

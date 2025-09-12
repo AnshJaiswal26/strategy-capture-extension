@@ -15,6 +15,7 @@ export default function Button({
         className={`${type}-btn ${size} ${disable ? "btn-disable" : ""}`}
         onClick={() => (onClick ? onClick() : null)}
         title={title ? title : ""}
+        disabled={disable}
       >
         {text}
       </button>

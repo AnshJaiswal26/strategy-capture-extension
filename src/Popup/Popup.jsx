@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useExtensionStore } from "@store";
 import { Header, TabSelector, Content, Footer } from "./components/index";
-import "./BacktestingPopup.css";
+import "./Popup.css";
 import { initWorker } from "@utils";
 
-export default function BacktestingPopup() {
+export default function Popup() {
   const popupRef = useRef(null);
 
   const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
@@ -28,27 +28,7 @@ export default function BacktestingPopup() {
         tabs={["Recent", "All Captures"]}
         updatePopupUI={updatePopupUI}
       />
-      <Content
-        inputArray={[
-          { label: "Time", value: 0, type: "time" },
-          { label: "Date", value: 0, type: "date" },
-          { label: "Time Frame", value: 0, type: "input" },
-          { label: "Pnl", value: 0, type: "input" },
-          { label: "Risk/Reward", value: 0, type: "input" },
-          {
-            label: "Entry Candle",
-            value: 0,
-            options: ["Engulfing", "Spinning Top", "Pin Bar"],
-            type: "dropdown",
-          },
-          {
-            label: "Strategy",
-            value: 0,
-            options: ["Breakout", "9 & 15 EMA 1st Pullback"],
-            type: "dropdown",
-          },
-        ]}
-      />
+      <Content />
       <Footer />
     </div>
   );

@@ -22,10 +22,10 @@ export const createInput = (action, updater) => {
   ]);
 };
 
-export const preProcessCanvasForOCR = (canvas, type = "price") => {
+export const createCleanCanvas = (canvas) => {
   const shallowCanvas = document.createElement("canvas");
-  shallowCanvas.width = canvas.width * 0.8;
-  shallowCanvas.height = canvas.height * 0.8;
+  shallowCanvas.width = canvas.width * 1.5;
+  shallowCanvas.height = canvas.height * 0.9;
 
   const ctx = shallowCanvas.getContext("2d");
   ctx.filter = "grayscale(100%) contrast(200%) brightness(120%)";

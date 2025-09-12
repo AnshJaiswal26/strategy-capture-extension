@@ -1,0 +1,84 @@
+import { createWorker } from "tesseract.js";
+import {
+  createCleanCanvas,
+  extractTimeResults,
+  extractPriceResults,
+} from "@utils";
+import { useExtensionStore } from "@store";
+
+let ocrWorker1;
+export const initWorker = async () => {
+  if (!ocrWorker1) {
+    ocrWorker1 = await createWorker("eng");
+  }
+  return ocrWorker1;
+};
+
+const getBlob = (canvas) =>
+  new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), "image/png");
+  });
+
+export async function readTimeCanvas(timeCanvas) {
+  const worker = await initWorker();
+
+  const blob = await getBlob(timeCanvas);
+
+  const result = await worker.recognize(blob, "eng", {
+    tessedit_char_whitelist:
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789: ",
+    preserve_interword_spaces: 1,
+    tessedit_pageseg_mode: "11",
+  });
+
+  const timeText = result.data.text;
+
+  return timeText;
+}
+
+export async function readCanvasAndSync(doc, prices) {
+  console.time("Canvas Process");
+  const root = doc.body.getElementsByClassName("js-rootresizer__contents")[0];
+
+  //finding time canvas
+  const centerArea = root?.getElementsByClassName("layout__area--center")[0];
+  const timeAxis = centerArea?.getElementsByClassName("time-axis")[0];
+  const timeCanvas = timeAxis?.getElementsByTagName("canvas")[1];
+
+  //finding top toolbar
+  const topArea = root?.getElementsByClassName("layout__area--top")[0];
+  const topToolbar = topArea?.querySelector(`div[role="toolbar"]`);
+  const timeFrame = topToolbar
+    ?.getElementsByTagName("button")[2]
+    .getAttribute("aria-label");
+
+  const cleanedTimeCanvas = createCleanCanvas(timeCanvas);
+
+  const timeText = await readTimeCanvas(cleanedTimeCanvas);
+  const extractedTimeData = extractTimeResults(timeText);
+  const extractedPriceData = extractPriceResults(prices);
+
+  const storeState = useExtensionStore.getState();
+  const popupUI = storeState.popupUI;
+  const captureMap = popupUI.captureMap;
+  const riskAmount = popupUI.riskAmount;
+
+  const data = { ...extractedTimeData, ...extractedPriceData };
+  data.Pnl = riskAmount * data["Risk/Reward"];
+  data["Time Frame"] = timeFrame;
+
+  const updatedValues = captureMap.map(({ mappingKey }) => ({
+    value:
+      mappingKey === "Risk/Reward"
+        ? `1:${data?.[mappingKey]}`
+        : data?.[mappingKey],
+  }));
+
+  const updater = storeState.updatePopupUIBatch;
+  updater([
+    ["captureMap", updatedValues, "update"],
+    ["isPopupOpen", true],
+  ]);
+
+  console.timeEnd("Canvas Process");
+}

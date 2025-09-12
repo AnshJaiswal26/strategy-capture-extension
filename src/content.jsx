@@ -1,13 +1,13 @@
-import BacktestingPopup from "./BacktestingPopup/BacktestingPopup";
-import BacktestButton from "./backtestingButton/BacktestingButton";
-import InfoTooltip from "./components/InfoTooltip/InfoTooltip";
-import { injectButtonAndTooltipInDom, injectElementInDom } from "@utils";
+import Popup from "./Popup/Popup";
+import PopupToggleButton from "./PopupToggleButton/PopupToggleButton";
+import Tooltip from "./components/Tooltip/Tooltip";
+import { renderComponent, injectButtonAndTooltipInIframe } from "@utils";
 import "./content.css";
 
 if (window.location.href.includes("https://tv.dhan.co")) {
-  injectElementInDom(<BacktestingPopup />);
-  injectButtonAndTooltipInDom(
-    <BacktestButton _IS_EXTENSION_BUILD_={true} />,
-    <InfoTooltip title={"Capture as Backtesed"} position="left" />
+  renderComponent("backtesting-extension-root", <Popup />, true);
+  injectButtonAndTooltipInIframe(
+    <PopupToggleButton _IS_EXTENSION_BUILD_={true} />,
+    <Tooltip title={"Capture as Backtesed"} position="left" />
   );
 }

@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { useExtensionStore } from "@store";
-import "./BacktestingButton.css";
+import "./PopupToggleButton.css";
 
-export default function BacktestButton({ _IS_EXTENSION_BUILD_ = false }) {
+export default function PopupToggleButton({ _IS_EXTENSION_BUILD_ = false }) {
   const hoverTimeOutRef = useRef();
   const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
   const updateTooltipUI = useExtensionStore((s) => s.updateTooltipUI);
