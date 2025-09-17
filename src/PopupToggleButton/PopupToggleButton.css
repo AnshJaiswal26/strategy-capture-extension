@@ -10,10 +10,18 @@
   width: 39px;
   height: 39px;
 }
+.toggle-popup-button svg {
+  color: #131722;
+}
 
 .toggle-popup-button.active {
   background-color: #e3effd;
 }
+
+.toggle-popup-button.active svg {
+  color: #2962ff;
+}
+
 .toggle-popup-button.active:hover {
   background-color: #bbd9fb;
 }

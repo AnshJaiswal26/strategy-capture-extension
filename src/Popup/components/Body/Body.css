@@ -1,0 +1,235 @@
+/* Body */
+.backtesting-popup-content {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  max-height: 330px;
+  min-height: 100px;
+  overflow: auto;
+}
+
+/* Recent Content */
+/* Tab Selector */
+.backtesting-popup-content-tab-selector {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0px 20px;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.backtesting-popup-content-tab-track-container {
+  position: relative;
+  display: flex;
+}
+
+.backtesting-popup-content-tab-track-container::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #e0e5f57e;
+  height: 4px;
+  border-radius: 5px;
+}
+
+.backtesting-popup-content-tab-container {
+  display: flex;
+  position: relative;
+  gap: 24px;
+}
+
+.backtesting-popup-content-tab-track-container .tab {
+  outline: none;
+  background: #ffffff;
+  position: relative;
+  font-size: 16px;
+  margin-bottom: 8px;
+  padding: 0;
+  text-align: center;
+  font-weight: bold;
+  color: #000000;
+  border: none;
+}
+
+.backtesting-popup-content-tab-track-container .tab:hover {
+  color: #5b5b5b;
+}
+
+.backtesting-popup-content-tab-track-container .tab.active {
+  pointer-events: none;
+}
+
+.active-tab-indicator {
+  position: absolute;
+  background: black;
+  height: 4px;
+  width: 52.1458px;
+  border-radius: 3px;
+  bottom: 0;
+  transition: transform 0.1s ease, width 0.1s ease;
+}
+
+/* Account Size and Risk  */
+.account-size-and-risk-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.account-size-and-risk-wrapper input {
+  width: 100%;
+}
+
+/* Creater */
+.no-input-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 14px;
+  margin-top: 20px;
+  color: #5b5b5b;
+}
+
+.input-creater-wrapper {
+  flex: 1;
+  border-radius: 4px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f2faffe5;
+  border: 1px solid #d3eeffe5;
+}
+
+.input-creater {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.input-creater div:last-child {
+  display: flex;
+  align-items: center;
+}
+
+.input-creater-wrapper .title,
+.btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.input-creater-row-wrapper {
+  transition: all ease-in-out 0.1s;
+}
+
+.input-creater-row-wrapper.expand {
+  display: grid;
+  grid-template-columns: 1fr 1fr 100px;
+  margin: 10px 0px;
+}
+
+.input-creater-row-wrapper .row-input {
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  padding: 0px 10px;
+  box-sizing: border-box;
+}
+
+/* Input-Grid */
+.backtesting-popup-inputs-grid {
+  display: grid;
+  grid-template-columns: 80px 120px 145px 35px;
+  gap: 0px 15px;
+  box-sizing: border-box;
+}
+
+/* AllCaptures Content */
+.all-captures-toolbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f8fbff;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.entries span:first-child {
+  font-size: 15px;
+  color: #8da9c0;
+}
+
+.entries span:last-child {
+  font-size: 15px;
+  font-weight: bold;
+  color: #747474;
+}
+
+.all-captures-row-wrapper {
+  border: 1px solid #cfe2ff;
+  border-radius: 3px 3px 0px 0px;
+  margin-bottom: 20px;
+}
+
+.all-captures-row-wrapper .tool-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: sticky;
+  left: 0;
+  padding: 5px;
+}
+
+.all-captures-row-wrapper .tool-header div:first-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.all-captures-row-wrapper .tool-header div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.all-captures-row {
+  display: flex;
+  height: fit-content;
+  box-sizing: border-box;
+  background-color: #f8fbff;
+  border-top: 1px solid #cfe2ff;
+  overflow-x: scroll;
+}
+
+.all-captures-row .column {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #8da9c0;
+}
+
+.all-captures-row .column div {
+  padding: 0px 10px;
+  text-align: left;
+  border-right: 1px solid #d6eaff;
+  border-bottom: 1px solid #d6eaff;
+  white-space: nowrap;
+}
+
+.all-captures-row .key {
+  border-bottom: 1px solid #d6eaff;
+}
+
+.all-captures-row .value {
+  color: #747474;
+  font-weight: bold;
+}

@@ -24,18 +24,20 @@ function Input({ label, type, options, selector, onChange, placeholder }) {
               value={value}
             >
               {options.map((option, index) => (
-                <option key={index}>{option}</option>
+                <option key={index} value={option.toLowerCase()}>
+                  {option}
+                </option>
               ))}
             </select>
           ) : (
             <input
-              type={type ?? "text"}
               className="backtesting-popup-input"
-              required
+              type={type ?? "text"}
               step={type === "time" ? 1 : ""}
               placeholder={placeholder}
               value={value}
               onChange={(e) => (onChange ? onChange(e.target.value) : null)}
+              required
             />
           )}
         </div>

@@ -1,55 +1,61 @@
-export const singleValueUpdater = (prevPopupUI, name, newVal) => {
+export const singleValueUpdater = (prevPopupUI, name, newVal, operation) => {
   const prevVal = prevPopupUI[name];
-  if (prevVal === newVal) return null;
-  return newVal;
+  return operation === "toggle" ? !prevVal : prevVal === newVal ? null : newVal;
 };
 
-export const arrayUpdater = (prevPopupUI, name, update, operation, index) => {
-  const prevArray = prevPopupUI[name];
-  const updatedArray =
-    operation === "delete"
-      ? prevArray.filter((_, i) => i !== index)
-      : operation === "add"
-      ? [...prevArray, update]
-      : Array.isArray(update)
-      ? prevArray.map((record, i) =>
-          update[i].value ? { ...record, ...update[i] } : record
-        )
-      : prevArray.map((record, i) =>
-          i === index
-            ? name === "captureMap"
-              ? { ...record, ...update }
-              : update
-            : record
-        );
+const operationMap = {
+  delete: (a, _, i) => a.filter((_, idx) => idx !== i),
+  add: (a, u, _, __, r) => (r ? [u, ...a] : [...a, u]),
+  update: (a, u, i, o) =>
+    a.map((r, idx) => (idx === i ? (o ? { ...r, ...u } : u) : r)),
+  batchUpdate: (a, u) => a.map((r, i) => (u[i].value ? { ...r, ...u[i] } : r)),
+};
 
-  // console.log(updatedArray);
+export const arrayUpdater = (prev, name, update, operation, idx) => {
+  if (operation === "edit") return update;
 
-  return updatedArray;
+  const isAddOptions = name === "addOptions";
+  const isAllCaptures = name === "allCaptures";
+  const mapIdx =
+    isAllCaptures && operation === "update" ? prev.allCapturesUpdatingIdx : idx;
+
+  const result = operationMap[operation](
+    prev[name],
+    isAllCaptures ? prev.captureMap : update,
+    mapIdx,
+    !(isAddOptions || isAllCaptures),
+    isAllCaptures
+  );
+  if (!isAddOptions) localStorage.setItem(name, JSON.stringify(result));
+
+  return result;
 };
 
 export const updaterMap = {
   isPopupOpen: singleValueUpdater,
   isDragging: singleValueUpdater,
   activeTab: singleValueUpdater,
-  isCaptureMapExpanded: singleValueUpdater,
   captureMap: arrayUpdater,
   addOptions: arrayUpdater,
   inputCreaterLabel: singleValueUpdater,
   inputCreaterType: singleValueUpdater,
+  allCaptures: arrayUpdater,
+  isEdit: singleValueUpdater,
+  isSaved: singleValueUpdater,
+  isAutoSavedEnabled: singleValueUpdater,
+  allCapturesUpdatingIdx: singleValueUpdater,
 };
 
 export const popupUIUpdater = (prev, sectionUpdates) => {
   const newUpdate = {};
   const prevPopupUI = prev.popupUI;
-  for (const [name, update, operation, index] of sectionUpdates) {
+  for (const { name, payload, operation, index } of sectionUpdates) {
     const updater = updaterMap[name];
     if (!updater) continue;
-    const result = updater(prevPopupUI, name, update, operation, index);
+    const result = updater(prevPopupUI, name, payload, operation, index);
 
-    if (!result) return prev;
+    if (result === undefined || result === null) continue;
     newUpdate[name] = result;
   }
-
   return { popupUI: { ...prevPopupUI, ...newUpdate } };
 };

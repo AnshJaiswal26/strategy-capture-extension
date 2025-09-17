@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useExtensionStore } from "@store";
-import { Header, TabSelector, Content, Footer } from "./components/index";
+import { Header, TabSelector, Body, Footer } from "./components/index";
 import "./Popup.css";
 import { initWorker } from "@utils";
 
@@ -9,6 +9,7 @@ export default function Popup() {
 
   const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
   const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
+  const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
 
   useEffect(() => {
     const initializeWorkers = async () => await initWorker();
@@ -26,9 +27,9 @@ export default function Popup() {
       <Header updatePopupUI={updatePopupUI} popupRef={popupRef} />
       <TabSelector
         tabs={["Recent", "All Captures"]}
-        updatePopupUI={updatePopupUI}
+        updatePopupUI={updatePopupUIBatch}
       />
-      <Content />
+      <Body />
       <Footer />
     </div>
   );

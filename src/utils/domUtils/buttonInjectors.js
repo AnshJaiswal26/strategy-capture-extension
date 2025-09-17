@@ -3,16 +3,16 @@ import { renderComponent } from "./renderComponent";
 import { injectStylesInIframe } from "./stylesInjector";
 
 const injectButtonInRiskRewardPopup = (doc) => {
-  let isOverlapObserved = false;
+  let isObservingRoot = false;
 
   const observer = new MutationObserver(() => {
     const popupRoot = doc.getElementById("overlap-manager-root");
     if (!popupRoot) return;
 
-    if (!isOverlapObserved) {
+    if (!isObservingRoot) {
       observer.disconnect();
       observer.observe(popupRoot, { subtree: true, childList: true });
-      isOverlapObserved = true;
+      isObservingRoot = true;
     }
 
     const isButtonInjected = doc.getElementById(
@@ -53,84 +53,55 @@ const injectButtonInRiskRewardPopup = (doc) => {
   observer.observe(doc.body, { childList: true });
 };
 
-// const injectButtonInToolbar = (doc, buttonWrapper) => {
-//   let isButtonInjected = false;
-
-//   const observer = new MutationObserver((mutations) => {
-//     for (const mutation of mutations) {
-//       for (const node of mutation.addedNodes) {
-//         if (node.nodeType === Node.ELEMENT_NODE && !isButtonInjected) {
-//           const toolbar = node.querySelector(`div[data-name="right-toolbar"]`);
-
-//           if (toolbar) {
-//             console.log("Toolbar found, trying to inject button...");
-//             const filler = toolbar?.lastChild;
-//             toolbar.insertBefore(buttonWrapper, filler);
-
-//             isButtonInjected = true;
-//             observer.disconnect();
-//           }
-//         }
-//       }
-//     }
-//   });
-//   observer.observe(doc.body, { childList: true, subtree: true });
-// };
-
 export function injectButtonAndTooltipInIframe(button, tooltip) {
-  let isIframeFound = false;
-  let isIframeLoaded = false;
-  let isButtonInjected = false;
+  let count = 0;
 
   const btnWrapper = renderComponent(
     "find-my-edge-extension-button-root",
     button
   );
   const tooltipWrapper = renderComponent("find-my-edge-tooltip-root", tooltip);
+  tooltipWrapper.style.position = "absolute";
 
-  const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          if (!isIframeFound && node.tagName === "IFRAME") {
-            console.log("Iframe found...");
-            isIframeFound = true;
-            observer.disconnect();
+  setTimeout(() => {
+    const injectorInterval = setInterval(() => {
+      count++;
 
-            node.addEventListener("load", () => {
-              const contentDocument = node.contentDocument;
+      const iframe = document.body.querySelector("iframe");
+      const contentDocument = iframe?.contentDocument;
 
-              console.log("Iframe loaded");
-              isIframeLoaded = true;
-              observer.observe(contentDocument.body, {
-                childList: true,
-                subtree: true,
-              });
+      if (count > 70) {
+        clearInterval(injectorInterval);
+        console.log("Please refresh the page taking longer than expected");
+        return;
+      }
 
-              contentDocument.body.appendChild(tooltipWrapper);
-              injectStylesInIframe(contentDocument);
-              injectButtonInRiskRewardPopup(contentDocument);
-            });
-          }
+      if (contentDocument) {
+        console.log("Iframe loaded");
 
-          if (!isButtonInjected) {
-            const toolbar = node.querySelector(
-              `div[data-name="right-toolbar"]`
-            );
+        const toolbar = contentDocument.querySelector(
+          `div[data-name="right-toolbar"]`
+        );
+        console.log("Searching for toolbar...");
 
-            if (toolbar) {
-              console.log("Toolbar found, trying to inject button...");
-              isButtonInjected = true;
+        if (toolbar) {
+          console.log("Toolbar found, injecting button");
+          clearInterval(injectorInterval);
 
-              const filler = toolbar?.lastChild;
-              toolbar.insertBefore(btnWrapper, filler);
+          contentDocument.body.appendChild(tooltipWrapper);
+          injectStylesInIframe(contentDocument);
+          injectButtonInRiskRewardPopup(contentDocument);
 
-              observer.disconnect();
-            }
-          }
+          const filler = toolbar?.lastChild;
+          toolbar.insertBefore(btnWrapper, filler);
+
+          const btnRect = btnWrapper.getBoundingClientRect();
+
+          tooltipWrapper.style.left = `${btnRect.left - 3}px`;
+          tooltipWrapper.style.top = `${btnRect.top + btnRect.height / 2}px`;
+          console.log("Button injected");
         }
       }
-    }
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
+    }, 200);
+  }, 1500);
 }

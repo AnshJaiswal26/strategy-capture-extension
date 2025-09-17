@@ -48,9 +48,10 @@ export async function readCanvasAndSync(doc, prices) {
   //finding top toolbar
   const topArea = root?.getElementsByClassName("layout__area--top")[0];
   const topToolbar = topArea?.querySelector(`div[role="toolbar"]`);
-  const timeFrame = topToolbar
-    ?.getElementsByTagName("button")[2]
-    .getAttribute("aria-label");
+  const topButtons = topToolbar?.getElementsByTagName("button");
+
+  const symbol = topButtons[0].textContent;
+  const timeFrame = topButtons[2].getAttribute("aria-label");
 
   const cleanedTimeCanvas = createCleanCanvas(timeCanvas);
 
@@ -65,6 +66,7 @@ export async function readCanvasAndSync(doc, prices) {
 
   const data = { ...extractedTimeData, ...extractedPriceData };
   data.Pnl = riskAmount * data["Risk/Reward"];
+  data["Symbol"] = symbol;
   data["Time Frame"] = timeFrame;
 
   const updatedValues = captureMap.map(({ mappingKey }) => ({
@@ -76,8 +78,8 @@ export async function readCanvasAndSync(doc, prices) {
 
   const updater = storeState.updatePopupUIBatch;
   updater([
-    ["captureMap", updatedValues, "update"],
-    ["isPopupOpen", true],
+    { name: "captureMap", payload: updatedValues, operation: "batchUpdate" },
+    { name: "isPopupOpen", payload: true },
   ]);
 
   console.timeEnd("Canvas Process");

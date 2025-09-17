@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useExtensionStore } from "@store";
 import "./PopupToggleButton.css";
+import { NotebookPen } from "lucide-react";
 
 export default function PopupToggleButton({ _IS_EXTENSION_BUILD_ = false }) {
   const hoverTimeOutRef = useRef();
@@ -8,15 +9,11 @@ export default function PopupToggleButton({ _IS_EXTENSION_BUILD_ = false }) {
   const updateTooltipUI = useExtensionStore((s) => s.updateTooltipUI);
   const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
 
-  const handleMouseEnter = (e) => {
-    hoverTimeOutRef.current = setTimeout(() => {
-      const buttonRect = e.target.getBoundingClientRect();
-      updateTooltipUI({
-        isVisible: true,
-        positionX: buttonRect.left - 145,
-        positionY: buttonRect.height / 2 + buttonRect.top,
-      });
-    }, 400);
+  const handleMouseEnter = () => {
+    hoverTimeOutRef.current = setTimeout(
+      () => updateTooltipUI({ isVisible: true }),
+      400
+    );
   };
 
   const handleMouseLeave = () => {
@@ -30,17 +27,10 @@ export default function PopupToggleButton({ _IS_EXTENSION_BUILD_ = false }) {
         _IS_EXTENSION_BUILD_ ? "" : "web-app"
       }`}
       onClick={() => updatePopupUI({ isPopupOpen: !isPopupOpen })}
-      onMouseEnter={(e) => handleMouseEnter(e)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img
-        src={
-          _IS_EXTENSION_BUILD_
-            ? chrome.runtime.getURL("audit.png")
-            : "audit.png"
-        }
-        className="backtest-button-img"
-      />
+      <NotebookPen strokeWidth={1} />
     </button>
   );
 }

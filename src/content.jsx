@@ -8,6 +8,6 @@ if (window.location.href.includes("https://tv.dhan.co")) {
   renderComponent("backtesting-extension-root", <Popup />, true);
   injectButtonAndTooltipInIframe(
     <PopupToggleButton _IS_EXTENSION_BUILD_={true} />,
-    <Tooltip title={"Capture as Backtesed"} position="left" />
+    <Tooltip title={"Capture Your Strategies"} position="left" />
   );
 }

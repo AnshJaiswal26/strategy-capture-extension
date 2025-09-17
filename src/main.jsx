@@ -23,6 +23,6 @@ createRoot(document.getElementById("root")).render(
 
     <BacktestingPopup />
     <BacktestButton />
-    <InfoTooltip title={"Capture as Backtesed"} position="left" />
+    <InfoTooltip title={"Capture Your Strategies"} position="left" />
   </StrictMode>
 );

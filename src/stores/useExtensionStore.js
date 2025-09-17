@@ -24,24 +24,31 @@ const commonUpdater = (prev, section, update) => {
 
 export const useExtensionStore = create((set) => ({
   popupUI: {
+    // ui
     isPopupOpen: false,
     isDragging: false,
-    activeTab: "",
+    activeTab: "Recent",
+
+    // top inputs
     accountSize: 0,
     riskPercent: 0,
     riskAmount: 300,
-    isCaptureMapExpanded: false,
-    captureMap: demoContent,
-    addOptions: [""],
+
+    // captureMap creater
+    captureMap: JSON.parse(localStorage.getItem("captureMap")) ?? demoContent,
     inputCreaterLabel: "",
     inputCreaterType: "Input",
+    addOptions: [""],
+
+    // all captures
+    allCaptures: JSON.parse(localStorage.getItem("allCaptures")) ?? [],
+    allCapturesUpdatingIdx: 0,
+    isEdit: false,
+    isAutoSaveEnabled: false,
+    isSaved: false,
   },
 
-  tooltipUI: {
-    isVisible: false,
-    positionX: 0,
-    positionY: 0,
-  },
+  tooltipUI: { isVisible: false },
 
   updateTooltipUI: (update) =>
     set((prev) => commonUpdater(prev, "tooltipUI", update)),
