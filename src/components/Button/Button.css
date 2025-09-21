@@ -78,5 +78,50 @@
   background-color: #dadada;
   border: 1px solid #ccc;
   color: #818181;
-  cursor: not-allowed;
+  cursor: default;
+}
+
+.toggle-btn {
+  all: unset;
+  height: 13px !important;
+  width: 32px !important;
+  background-color: #ebebeb;
+  border-radius: 50px;
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer;
+  transition: background-color ease-in-out 0.1s;
+}
+
+.toggle-btn.enabled {
+  background-color: #2962ff;
+}
+
+.toggle-btn .circle {
+  background-color: #bdbdbd;
+  height: 16px !important;
+  width: 16px !important;
+  border-radius: 50%;
+  transform: translateX(0%);
+  transition: transform ease-in-out 0.2s, background-color ease-in-out 0.2s,
+    transform ease-in-out 0.2s;
+  border: 1px solid #e0e0e0;
+}
+
+.toggle-btn .circle:hover {
+  background-color: #b4b4b4;
+}
+
+.toggle-btn.enabled .circle {
+  transform: translateX(100%);
+  background-color: #ffffff;
+  border: 1px solid #2962ff;
+}
+
+.toggle-btn.enabled .circle:hover {
+  background-color: #f1f1f1;
+}
+
+.toggle-label {
+  color: #383838;
 }

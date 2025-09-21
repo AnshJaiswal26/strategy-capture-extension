@@ -4,20 +4,22 @@ export default function Button({
   type = "fill",
   size = "medium",
   onClick,
-  x = "center",
-  y = "center",
   disable = false,
   title,
+  toggle = false,
 }) {
   return (
-    <div className={`btn-wrapper x-${x} y-${y}`}>
+    <div className={`btn-wrapper`}>
+      {type === "toggle" && <span className="toggle-label">{text}</span>}
       <button
-        className={`${type}-btn ${size} ${disable ? "btn-disable" : ""}`}
+        className={`${type}-btn ${toggle ? "enabled" : ""} ${size} ${
+          disable ? "btn-disable" : ""
+        }`}
         onClick={() => (onClick ? onClick() : null)}
         title={title ? title : ""}
         disabled={disable}
       >
-        {text}
+        {type !== "toggle" ? text : <div className="circle"></div>}
       </button>
     </div>
   );

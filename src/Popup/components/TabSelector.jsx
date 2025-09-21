@@ -5,19 +5,27 @@ export const moveIndicator = (e, tab, updater) => {
   const tabContainer = currentTab?.parentElement;
   const activeTabRect = currentTab?.getBoundingClientRect();
   const tabContainerRect = tabContainer?.getBoundingClientRect();
-  const indicator = tabContainer?.lastElementChild;
 
-  if (!activeTabRect || !tabContainerRect || !indicator) return;
+  if (!activeTabRect || !tabContainerRect) return;
 
   const leftSpace = activeTabRect.left - tabContainerRect.left;
-  indicator.style.width = `${activeTabRect.width}px`;
-  indicator.style.transform = `translateX(${leftSpace}px)`;
 
-  updater([{ name: "activeTab", payload: tab }]);
+  updater([
+    {
+      name: "Tab",
+      payload: {
+        currentTab: tab,
+        width: `${activeTabRect.width}px`,
+        transform: `translateX(${leftSpace}px)`,
+      },
+    },
+  ]);
 };
 
-export default function TabSelector({ tabs, updatePopupUI }) {
-  const activeTab = useExtensionStore((s) => s.popupUI.activeTab);
+export default function TabSelector({ tabs, updatePopupUIBatch }) {
+  const activeTab = useExtensionStore((s) => s.popupUI.Tab.currentTab);
+  const width = useExtensionStore((s) => s.popupUI.Tab.width);
+  const transform = useExtensionStore((s) => s.popupUI.Tab.transform);
 
   return (
     <div className="backtesting-popup-content-tab-selector">
@@ -28,14 +36,17 @@ export default function TabSelector({ tabs, updatePopupUI }) {
               id={`tab-${tab.toLowerCase().split(" ").join("-")}`}
               className={`tab${activeTab === tab ? " active" : ""}`}
               key={index}
-              onClick={(e) => moveIndicator(e, tab, updatePopupUI)}
+              onClick={(e) => moveIndicator(e, tab, updatePopupUIBatch)}
               disabled={activeTab === tab}
             >
               {tab}
             </button>
           ))}
 
-          <div className="active-tab-indicator"></div>
+          <div
+            className="active-tab-indicator"
+            style={{ width: width, transform: transform }}
+          ></div>
         </div>
       </div>
     </div>

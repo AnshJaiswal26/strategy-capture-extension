@@ -3,12 +3,25 @@ export const singleValueUpdater = (prevPopupUI, name, newVal, operation) => {
   return operation === "toggle" ? !prevVal : prevVal === newVal ? null : newVal;
 };
 
+export const multiValueUpdater = (prevPopupUI, name, update) => {
+  const prev = prevPopupUI[name];
+  const newUpdates = {};
+  for (const key in update) {
+    if (prev[key] !== update[key]) newUpdates[key] = update[key];
+  }
+  return newUpdates;
+};
+
 const operationMap = {
-  delete: (a, _, i) => a.filter((_, idx) => idx !== i),
-  add: (a, u, _, __, r) => (r ? [u, ...a] : [...a, u]),
+  delete: (a, u, i) => a.filter((_, idx) => idx !== i),
+  add: (a, u, i, o, r) => (r ? [u, ...a] : [...a, u]),
   update: (a, u, i, o) =>
     a.map((r, idx) => (idx === i ? (o ? { ...r, ...u } : u) : r)),
-  batchUpdate: (a, u) => a.map((r, i) => (u[i].value ? { ...r, ...u[i] } : r)),
+  batchUpdate: (a, u) =>
+    a.map((r) => {
+      const value = u?.[r.mappingKey];
+      return value !== undefined ? { ...r, value } : r;
+    }),
 };
 
 export const arrayUpdater = (prev, name, update, operation, idx) => {
@@ -34,7 +47,7 @@ export const arrayUpdater = (prev, name, update, operation, idx) => {
 export const updaterMap = {
   isPopupOpen: singleValueUpdater,
   isDragging: singleValueUpdater,
-  activeTab: singleValueUpdater,
+  Tab: multiValueUpdater,
   captureMap: arrayUpdater,
   addOptions: arrayUpdater,
   inputCreaterLabel: singleValueUpdater,
@@ -42,8 +55,11 @@ export const updaterMap = {
   allCaptures: arrayUpdater,
   isEdit: singleValueUpdater,
   isSaved: singleValueUpdater,
-  isAutoSavedEnabled: singleValueUpdater,
+  isAutoSaveEnabled: singleValueUpdater,
   allCapturesUpdatingIdx: singleValueUpdater,
+  accountSize: singleValueUpdater,
+  riskAmount: singleValueUpdater,
+  riskPercent: singleValueUpdater,
 };
 
 export const popupUIUpdater = (prev, sectionUpdates) => {

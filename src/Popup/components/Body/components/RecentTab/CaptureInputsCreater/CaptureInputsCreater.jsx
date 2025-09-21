@@ -2,7 +2,7 @@ import Title from "./Title";
 import InputsCreater from "./InputsCreater";
 import { useState } from "react";
 
-export default function CaptureMapCreater() {
+export default function CaptureInputsCreater() {
   const [isExpanded, setIsExpanded] = useState();
 
   return (

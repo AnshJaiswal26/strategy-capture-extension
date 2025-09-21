@@ -61,24 +61,17 @@ export async function readCanvasAndSync(doc, prices) {
 
   const storeState = useExtensionStore.getState();
   const popupUI = storeState.popupUI;
-  const captureMap = popupUI.captureMap;
   const riskAmount = popupUI.riskAmount;
 
   const data = { ...extractedTimeData, ...extractedPriceData };
   data.Pnl = riskAmount * data["Risk/Reward"];
   data["Symbol"] = symbol;
   data["Time Frame"] = timeFrame;
-
-  const updatedValues = captureMap.map(({ mappingKey }) => ({
-    value:
-      mappingKey === "Risk/Reward"
-        ? `1:${data?.[mappingKey]}`
-        : data?.[mappingKey],
-  }));
+  data["Risk/Reward"] = `1:${data["Risk/Reward"]}`;
 
   const updater = storeState.updatePopupUIBatch;
   updater([
-    { name: "captureMap", payload: updatedValues, operation: "batchUpdate" },
+    { name: "captureMap", payload: data, operation: "batchUpdate" },
     { name: "isPopupOpen", payload: true },
   ]);
 

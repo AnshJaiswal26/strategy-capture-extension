@@ -2,9 +2,9 @@ import { Trash } from "lucide-react";
 import { Button, Input, Label } from "@components";
 import { mapping } from "@data";
 import { useExtensionStore } from "@store";
-import { Fragment } from "react";
+import { handleChange } from "./handlers";
 
-export default function InputGrid({ updatePopupUIBatch }) {
+export default function CreatedInputsGrid({ updatePopupUIBatch }) {
   return (
     <div className="backtesting-popup-inputs-grid">
       {["Labels", "Inputs", "Mappings"].map((field) => (
@@ -34,14 +34,7 @@ function Row({ index, updatePopupUIBatch }) {
         options={input?.options}
         selector={input.value}
         onChange={(v) =>
-          updatePopupUIBatch([
-            {
-              name: "captureMap",
-              payload: { value: v },
-              operation: "update",
-              index,
-            },
-          ])
+          handleChange(input.mappingKey, v, updatePopupUIBatch, index)
         }
       />
 
@@ -50,7 +43,7 @@ function Row({ index, updatePopupUIBatch }) {
           type="dropdown"
           options={mapping.keys}
           selector={(s) => s.popupUI.captureMap[index].mappingKey}
-          onChange={(v) =>
+          onChange={(v) => {
             updatePopupUIBatch([
               {
                 name: "captureMap",
@@ -58,8 +51,8 @@ function Row({ index, updatePopupUIBatch }) {
                 operation: "update",
                 index,
               },
-            ])
-          }
+            ]);
+          }}
         />
       ) : (
         <div className="filler"></div>

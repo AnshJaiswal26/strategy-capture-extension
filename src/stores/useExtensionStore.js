@@ -27,7 +27,11 @@ export const useExtensionStore = create((set) => ({
     // ui
     isPopupOpen: false,
     isDragging: false,
-    activeTab: "Recent",
+    Tab: {
+      currentTab: "Recent",
+      width: "52.1458px",
+      transform: "translateX(0px)",
+    },
 
     // top inputs
     accountSize: 0,
@@ -46,6 +50,14 @@ export const useExtensionStore = create((set) => ({
     isEdit: false,
     isAutoSaveEnabled: false,
     isSaved: false,
+
+    //calculator
+    buyPrice: 0,
+    sellPrice: 0,
+    qty: 0,
+    pts: 0,
+    pnlAmount: 0,
+    pnlPercent: 0,
   },
 
   tooltipUI: { isVisible: false },

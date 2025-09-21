@@ -24,9 +24,7 @@ function Input({ label, type, options, selector, onChange, placeholder }) {
               value={value}
             >
               {options.map((option, index) => (
-                <option key={index} value={option.toLowerCase()}>
-                  {option}
-                </option>
+                <option key={index}>{option}</option>
               ))}
             </select>
           ) : (

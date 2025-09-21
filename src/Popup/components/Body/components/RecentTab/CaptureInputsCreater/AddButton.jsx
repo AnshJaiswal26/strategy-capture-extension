@@ -1,23 +1,21 @@
 import { Button } from "@components";
 import { useExtensionStore } from "@store";
 import DropdownCreater from "./DropdownCreater";
-import { createInput } from "@utils";
+import { createInput } from "./utils";
 
 export default function AddButton({ updatePopupUIBatch }) {
-  const isNoOption = useExtensionStore(
-    (s) => s.popupUI.addOptions.length === 0
-  );
-  const isAnyOptionEmpty = useExtensionStore((s) =>
-    s.popupUI.addOptions.includes("")
-  );
   const isDropdown = useExtensionStore(
-    (s) => s.popupUI.inputCreaterType === "dropdown"
+    (s) => s.popupUI.inputCreaterType === "Dropdown"
+  );
+  const isOptionsLengthZero = useExtensionStore(
+    (s) => s.popupUI.addOptions.length === 0 && isDropdown
+  );
+  const isAnyOptionEmpty = useExtensionStore(
+    (s) => s.popupUI.addOptions.includes("") && isDropdown
   );
   const isLabelEmpty = useExtensionStore(
     (s) => s.popupUI.inputCreaterLabel === ""
   );
-  const isOptionsLengthZero = isNoOption && isDropdown;
-  const isOptionEmpty = isAnyOptionEmpty && isDropdown;
 
   return (
     <>
@@ -30,11 +28,11 @@ export default function AddButton({ updatePopupUIBatch }) {
             ? "Please add at least one option"
             : isLabelEmpty
             ? "Label is required"
-            : isOptionEmpty
+            : isAnyOptionEmpty
             ? "Please fill out all options"
             : ""
         }
-        disable={isOptionsLengthZero || isLabelEmpty || isOptionEmpty}
+        disable={isOptionsLengthZero || isLabelEmpty || isAnyOptionEmpty}
         onClick={() => createInput("add", updatePopupUIBatch)}
       />
 

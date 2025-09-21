@@ -1,6 +1,11 @@
+import { Button, Input } from "@components";
+import { useExtensionStore } from "@store";
+import { repeatElement } from "@utils";
+import { Trash } from "lucide-react";
+import { Fragment } from "react";
+
 export default function DropdownCreater({ updatePopupUIBatch }) {
   const addOptions = useExtensionStore((s) => s.popupUI.addOptions);
-
   return (
     <>
       {addOptions.map((option, index) => (

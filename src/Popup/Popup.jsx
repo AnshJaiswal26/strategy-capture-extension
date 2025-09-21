@@ -19,6 +19,7 @@ export default function Popup() {
   return (
     <div
       ref={popupRef}
+      id="find-my-edge-capture-popup"
       className="backtesting-popup"
       style={{
         display: isPopupOpen ? "block" : "none",
@@ -26,8 +27,8 @@ export default function Popup() {
     >
       <Header updatePopupUI={updatePopupUI} popupRef={popupRef} />
       <TabSelector
-        tabs={["Recent", "All Captures"]}
-        updatePopupUI={updatePopupUIBatch}
+        tabs={["Recent", "All Captures", "Charges Calculator"]}
+        updatePopupUIBatch={updatePopupUIBatch}
       />
       <Body />
       <Footer />
