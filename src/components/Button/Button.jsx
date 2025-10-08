@@ -7,11 +7,13 @@ export default function Button({
   disable = false,
   title,
   toggle = false,
+  submit = false,
 }) {
   return (
     <div className={`btn-wrapper`}>
       {type === "toggle" && <span className="toggle-label">{text}</span>}
       <button
+        type={submit ? "submit" : ""}
         className={`${type}-btn ${toggle ? "enabled" : ""} ${size} ${
           disable ? "btn-disable" : ""
         }`}

@@ -1,3 +1,4 @@
+import { mapping } from "@data";
 import { useExtensionStore } from "@store";
 import { format } from "@utils";
 
@@ -49,4 +50,27 @@ export const handleChange = (field, value, updater, index = undefined) => {
   }
 
   updater(arrayUpdates);
+};
+
+export const handleRowEdit = (updater, input, i) => {
+  updater([
+    ...(input?.options
+      ? [
+          {
+            name: "addOptions",
+            payload: input.options,
+            operation: "edit",
+          },
+        ]
+      : []),
+    {
+      name: "inputCreaterLabel",
+      payload: input.label,
+    },
+    {
+      name: "inputCreaterType",
+      payload: mapping.reverseType[input.type],
+    },
+    { name: "isUpdate", payload: { value: true, index: i } },
+  ]);
 };

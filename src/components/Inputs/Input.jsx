@@ -23,7 +23,7 @@ function Input({ label, type, options, selector, onChange, placeholder }) {
               onChange={(e) => (onChange ? onChange(e.target.value) : null)}
               value={value}
             >
-              {options.map((option, index) => (
+              {options?.map((option, index) => (
                 <option key={index}>{option}</option>
               ))}
             </select>

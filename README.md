@@ -1,12 +1,26 @@
-# React + Vite
+# Strategy Capture Extension
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Status:** Frontend complete, backend API integration pending  
+**Part of:** Find-My-Edge project
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Capture trading metrics (risk-reward ratio, PnL, timeframe, trade date/time) from Dhan charts
+- User-defined strategy naming and input creation
 
-## Expanding the ESLint configuration
+## Notes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Backend API integration is in progress
+- Currently works as a frontend prototype using static/mock data
+- Built with React and included inside the `src` folder of this project
+
+## Usage / Test
+
+To test the extension locally:
+
+1. Clone or download this repository.
+2. Inside the repository, locate the `src/Strategy-Capture-Extension` folder — this is the built Chrome extension folder.
+3. Open Chrome and go to `chrome://extensions/`.
+4. Enable **Developer mode** (top-right corner).
+5. Click **Load unpacked** and select the `src/extension` folder.
+6. Open [tv.dhan.co](https://tv.dhan.co/) in Chrome and test the extension features.

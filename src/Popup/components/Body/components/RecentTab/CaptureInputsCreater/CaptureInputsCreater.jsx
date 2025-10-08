@@ -1,19 +1,14 @@
 import Title from "./Title";
 import InputsCreater from "./InputsCreater";
 import { useState } from "react";
+import { TopDownSlider } from "@components";
 
 export default function CaptureInputsCreater() {
-  const [isExpanded, setIsExpanded] = useState();
-
   return (
-    <div className="input-creater-wrapper">
-      <Title isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
-
-      <div
-        className={`input-creater-row-wrapper${isExpanded ? " expand" : ""}`}
-      >
-        {isExpanded && <InputsCreater />}
+    <TopDownSlider title={"Create Capture Inputs"}>
+      <div className={"input-creater-row-wrapper"}>
+        <InputsCreater />
       </div>
-    </div>
+    </TopDownSlider>
   );
 }

@@ -1,0 +1,24 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader.popup {
+  min-height: 300px;
+}
+
+.loader.popup svg,
+.loader svg {
+  animation: spin infinite linear 1.5s;
+  color: rgb(65, 96, 255);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

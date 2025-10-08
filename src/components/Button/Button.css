@@ -85,7 +85,7 @@
   all: unset;
   height: 13px !important;
   width: 32px !important;
-  background-color: #ebebeb;
+  background-color: #e1e1e1;
   border-radius: 50px;
   display: flex !important;
   align-items: center !important;
@@ -98,28 +98,20 @@
 }
 
 .toggle-btn .circle {
-  background-color: #bdbdbd;
+  background-color: #ffffff;
   height: 16px !important;
   width: 16px !important;
   border-radius: 50%;
   transform: translateX(0%);
   transition: transform ease-in-out 0.2s, background-color ease-in-out 0.2s,
     transform ease-in-out 0.2s;
-  border: 1px solid #e0e0e0;
-}
-
-.toggle-btn .circle:hover {
-  background-color: #b4b4b4;
+  border: 1px solid #cfcfcf;
 }
 
 .toggle-btn.enabled .circle {
   transform: translateX(100%);
   background-color: #ffffff;
   border: 1px solid #2962ff;
-}
-
-.toggle-btn.enabled .circle:hover {
-  background-color: #f1f1f1;
 }
 
 .toggle-label {

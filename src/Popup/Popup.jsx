@@ -1,13 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useExtensionStore } from "@store";
 import { Header, TabSelector, Body, Footer } from "./components/index";
 import "./Popup.css";
 import { initWorker } from "@utils";
+import LoginForm from "./components/LoginForm/LoginForm";
+import { Loading } from "@components";
 
 export default function Popup() {
   const popupRef = useRef(null);
 
   const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
+  const isUserLogedIn = useExtensionStore((s) => s.popupUI.isUserLogedIn);
   const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
   const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
 
@@ -26,12 +29,40 @@ export default function Popup() {
       }}
     >
       <Header updatePopupUI={updatePopupUI} popupRef={popupRef} />
-      <TabSelector
-        tabs={["Recent", "All Captures", "Charges Calculator"]}
-        updatePopupUIBatch={updatePopupUIBatch}
-      />
-      <Body />
-      <Footer />
+
+      {!isUserLogedIn ? (
+        <LoginForm updater={updatePopupUIBatch} />
+      ) : (
+        <>
+          <TabSelector
+            tabs={["Recent", "All Captures"]}
+            updatePopupUIBatch={updatePopupUIBatch}
+          />
+          <BodyAndFooter />
+        </>
+      )}
     </div>
+  );
+}
+
+function BodyAndFooter() {
+  const [isDataLoading, setIsDataLoading] = useState(false);
+
+  useEffect(() => {
+    setIsDataLoading(true);
+    setTimeout(() => setIsDataLoading(false), 1000);
+  }, []);
+
+  return (
+    <>
+      {isDataLoading ? (
+        <Loading size={30} color={"blue"} />
+      ) : (
+        <>
+          <Body />
+          <Footer />
+        </>
+      )}
+    </>
   );
 }

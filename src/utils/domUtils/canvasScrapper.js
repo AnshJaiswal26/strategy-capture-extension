@@ -36,6 +36,11 @@ export async function readTimeCanvas(timeCanvas) {
   return timeText;
 }
 
+const updateTradeCountByDate = (prev, date) => {
+  const count = (prev?.[date] || 0) + 1;
+  return { newCounts: { ...prev, [date]: count }, count };
+};
+
 export async function readCanvasAndSync(doc, prices) {
   console.time("Canvas Process");
   const root = doc.body.getElementsByClassName("js-rootresizer__contents")[0];
@@ -69,10 +74,16 @@ export async function readCanvasAndSync(doc, prices) {
   data["Time Frame"] = timeFrame;
   data["Risk/Reward"] = `1:${data["Risk/Reward"]}`;
 
+  const { newCounts, count } = updateTradeCountByDate(
+    popupUI.tradeCountByDate,
+    data.Date
+  );
+
   const updater = storeState.updatePopupUIBatch;
   updater([
     { name: "captureMap", payload: data, operation: "batchUpdate" },
     { name: "isPopupOpen", payload: true },
+    { name: "tradeCountByDate", payload: newCounts },
   ]);
 
   console.timeEnd("Canvas Process");

@@ -43,6 +43,7 @@ export const useExtensionStore = create((set) => ({
     inputCreaterLabel: "",
     inputCreaterType: "Input",
     addOptions: [""],
+    isUpdate: { value: false, index: 0 },
 
     // all captures
     allCaptures: JSON.parse(localStorage.getItem("allCaptures")) ?? [],
@@ -50,6 +51,7 @@ export const useExtensionStore = create((set) => ({
     isEdit: false,
     isAutoSaveEnabled: false,
     isSaved: false,
+    tradeCountByDate: {},
 
     //calculator
     buyPrice: 0,
@@ -58,6 +60,9 @@ export const useExtensionStore = create((set) => ({
     pts: 0,
     pnlAmount: 0,
     pnlPercent: 0,
+
+    //login
+    isUserLogedIn: true,
   },
 
   tooltipUI: { isVisible: false },

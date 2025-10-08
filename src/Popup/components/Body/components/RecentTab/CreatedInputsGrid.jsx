@@ -1,8 +1,8 @@
-import { Trash } from "lucide-react";
+import { Pencil, Trash } from "lucide-react";
 import { Button, Input, Label } from "@components";
 import { mapping } from "@data";
 import { useExtensionStore } from "@store";
-import { handleChange } from "./handlers";
+import { handleChange, handleRowEdit } from "./handlers";
 
 export default function CreatedInputsGrid({ updatePopupUIBatch }) {
   return (
@@ -58,16 +58,24 @@ function Row({ index, updatePopupUIBatch }) {
         <div className="filler"></div>
       )}
 
-      <Button
-        text={<Trash size={16} />}
-        size="small"
-        type="hollow"
-        onClick={() =>
-          updatePopupUIBatch([
-            { name: "captureMap", operation: "delete", index },
-          ])
-        }
-      />
+      <div className="edit-trash-btn-wrapper">
+        <Button
+          text={<Pencil size={16} />}
+          size="small"
+          type="hollow"
+          onClick={() => handleRowEdit(updatePopupUIBatch, input, index)}
+        />
+        <Button
+          text={<Trash size={16} />}
+          size="small"
+          type="fill"
+          onClick={() =>
+            updatePopupUIBatch([
+              { name: "captureMap", operation: "delete", index },
+            ])
+          }
+        />
+      </div>
     </>
   );
 }

@@ -1,0 +1,10 @@
+.btn-selector-wrapper {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.btn-selector {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}

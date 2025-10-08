@@ -9,7 +9,7 @@ export const multiValueUpdater = (prevPopupUI, name, update) => {
   for (const key in update) {
     if (prev[key] !== update[key]) newUpdates[key] = update[key];
   }
-  return newUpdates;
+  return { ...prev, ...newUpdates };
 };
 
 const operationMap = {
@@ -26,12 +26,14 @@ const operationMap = {
 
 export const arrayUpdater = (prev, name, update, operation, idx) => {
   if (operation === "edit") return update;
+  if (operation === "deleteAll") return [];
 
   const isAddOptions = name === "addOptions";
   const isAllCaptures = name === "allCaptures";
   const mapIdx =
     isAllCaptures && operation === "update" ? prev.allCapturesUpdatingIdx : idx;
 
+  console.log(operation);
   const result = operationMap[operation](
     prev[name],
     isAllCaptures ? prev.captureMap : update,
@@ -60,6 +62,9 @@ export const updaterMap = {
   accountSize: singleValueUpdater,
   riskAmount: singleValueUpdater,
   riskPercent: singleValueUpdater,
+  isUserLogedIn: singleValueUpdater,
+  tradeCountByDate: multiValueUpdater,
+  isUpdate: multiValueUpdater,
 };
 
 export const popupUIUpdater = (prev, sectionUpdates) => {
@@ -68,10 +73,12 @@ export const popupUIUpdater = (prev, sectionUpdates) => {
   for (const { name, payload, operation, index } of sectionUpdates) {
     const updater = updaterMap[name];
     if (!updater) continue;
+
     const result = updater(prevPopupUI, name, payload, operation, index);
 
     if (result === undefined || result === null) continue;
     newUpdate[name] = result;
   }
+
   return { popupUI: { ...prevPopupUI, ...newUpdate } };
 };

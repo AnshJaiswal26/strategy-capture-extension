@@ -8,16 +8,10 @@ export default function Body() {
   const activeTab = useExtensionStore((s) => s.popupUI.Tab.currentTab);
 
   return (
-    <>
-      <div className="backtesting-popup-content">
-        {activeTab === "Recent" ? (
-          <RecentTab />
-        ) : activeTab === "All Captures" ? (
-          <AllCapturesTab />
-        ) : (
-          <CalculatorTab />
-        )}
-      </div>
-    </>
+    <div className="backtesting-popup-content">
+      {activeTab === "Recent" && <RecentTab />}
+      {activeTab === "All Captures" && <AllCapturesTab />}
+      {/* {activeTab === "Charges Calculator" && <CalculatorTab />} */}
+    </div>
   );
 }

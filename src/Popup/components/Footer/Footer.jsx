@@ -1,6 +1,5 @@
-import { LoaderCircle, Save, SaveOff } from "lucide-react";
 import { useExtensionStore } from "@store";
-import { Button, Input, Label } from "@components";
+import { Button } from "@components";
 import { handleBtnClick } from "./handlers";
 
 export default function Footer() {
@@ -9,15 +8,12 @@ export default function Footer() {
   const isEdit = useExtensionStore((s) => s.popupUI.isEdit);
 
   const isAllCaptures = activeTab === "All Captures";
+  const isCalculator = activeTab === "Charges Calculator";
 
   return (
     <div className="backtesting-popup-footer-wrapper">
       <div className="backtesting-popup-footer">
-        <div
-          className={`backtesting-popup-footer-btn-wrapper ${
-            isAllCaptures ? "space" : ""
-          }`}
-        >
+        <div className={`backtesting-popup-footer-btn-wrapper space`}>
           {isAllCaptures ? (
             <>
               <ToggleButton updater={updatePopupUIBatch} />
@@ -27,18 +23,35 @@ export default function Footer() {
                 updater={updatePopupUIBatch}
               />
             </>
+          ) : isCalculator ? (
+            <Button
+              text={"Ready Order"}
+              type={"fill"}
+              // onClick={() => handleBtnClick(1, updatePopupUIBatch)}
+            />
           ) : (
             <>
-              <FirstBtn
-                isAllCaptures={isAllCaptures}
-                isEdit={isEdit}
-                updater={updatePopupUIBatch}
-              />
               <Button
-                text={isEdit ? "Update" : "Add"}
-                type={isAllCaptures && isAutoSave ? "hollow" : "fill"}
-                onClick={() => handleBtnClick(1, updatePopupUIBatch)}
+                text="Logout"
+                type="hollow"
+                onClick={() =>
+                  updatePopupUIBatch([
+                    { name: "isUserLogedIn", payload: false },
+                  ])
+                }
               />
+              <div className="footer-right-side-btn">
+                <FirstBtn
+                  isAllCaptures={isAllCaptures}
+                  isEdit={isEdit}
+                  updater={updatePopupUIBatch}
+                />
+                <Button
+                  text={isEdit ? "Update" : "Add"}
+                  type={isAllCaptures && isAutoSave ? "hollow" : "fill"}
+                  onClick={() => handleBtnClick(1, updatePopupUIBatch)}
+                />
+              </div>
             </>
           )}
         </div>
