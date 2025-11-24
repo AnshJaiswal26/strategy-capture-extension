@@ -9,10 +9,10 @@ import { Loading } from "@components";
 export default function Popup() {
   const popupRef = useRef(null);
 
-  const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
-  const isUserLogedIn = useExtensionStore((s) => s.popupUI.isUserLogedIn);
-  const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
-  const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
+  const isPopupOpen = useExtensionStore((s) => s.isPopupOpen);
+  const isUserLogedIn = useExtensionStore((s) => s.isUserLogedIn);
+
+  const updateStore = useExtensionStore((s) => s.updateStore);
 
   useEffect(() => {
     const initializeWorkers = async () => await initWorker();
@@ -28,41 +28,38 @@ export default function Popup() {
         display: isPopupOpen ? "block" : "none",
       }}
     >
-      <Header updatePopupUI={updatePopupUI} popupRef={popupRef} />
+      <Header updateStore={updateStore} popupRef={popupRef} />
 
       {!isUserLogedIn ? (
-        <LoginForm updater={updatePopupUIBatch} />
+        <LoginForm updateStore={updateStore} />
       ) : (
         <>
           <TabSelector
             tabs={["Recent", "All Captures"]}
-            updatePopupUIBatch={updatePopupUIBatch}
+            updateStore={updateStore}
           />
-          <BodyAndFooter />
+          <BodyAndFooter updateStore={updateStore} />
         </>
       )}
     </div>
   );
 }
 
-function BodyAndFooter() {
-  const [isDataLoading, setIsDataLoading] = useState(false);
+function BodyAndFooter({ updateStore }) {
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   useEffect(() => {
-    setIsDataLoading(true);
     setTimeout(() => setIsDataLoading(false), 1000);
   }, []);
 
+  if (isDataLoading) {
+    return <Loading size={30} color={"blue"} />;
+  }
+
   return (
     <>
-      {isDataLoading ? (
-        <Loading size={30} color={"blue"} />
-      ) : (
-        <>
-          <Body />
-          <Footer />
-        </>
-      )}
+      <Body updateStore={updateStore} />
+      <Footer updateStore={updateStore} />
     </>
   );
 }

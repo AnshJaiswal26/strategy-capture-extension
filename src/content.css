@@ -1,1 +1,9 @@
-@import url("./Popup/Popup.css");
+@import "./components/Button/Button.css";
+@import "./components/ButtonSelector/ButtonSelector.css";
+@import "./components/Inputs/Input.css";
+@import "./components/Label/Label.css";
+@import "./components/Loading/Loading.css";
+@import "./components/TopDownSlider/TopDownSlider.css";
+@import "./Popup/components/Body/Body.css";
+@import "./Popup/components/LoginForm/LoginForm.css";
+@import "./Popup/Popup.css";

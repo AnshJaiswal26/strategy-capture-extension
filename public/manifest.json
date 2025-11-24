@@ -1,24 +1,47 @@
 {
   "manifest_version": 3,
-  "name": "Find My Edge Backtest Extension",
+  "name": "Strategy Capture Extension",
   "version": "1.0",
-  "description": "A backtesting extension for Find My Edge",
+  "description": "A backtesting extension part of (Find My Edge)",
+
   "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["https://tv.dhan.co/*"],
+
+  "host_permissions": [
+    "https://tv.dhan.co/*",
+    "https://www.angelone.in/*",
+    "https://groww.in/*",
+    "https://tv.upstox.com/*",
+    "https://pro.upstox.com/*",
+    "https://kite-beta.zerodha.com/*"
+  ],
 
   "content_scripts": [
     {
-      "matches": ["https://tv.dhan.co/*"],
+      "matches": [
+        "https://tv.dhan.co/*",
+        "https://www.angelone.in/*",
+        "https://groww.in/*",
+        "https://tv.upstox.com/*",
+        "https://pro.upstox.com/*",
+        "https://kite-beta.zerodha.com/*"
+      ],
       "js": ["content.js"],
-      "css": ["content.css"],
       "run_at": "document_idle",
-      "all_frames": true
+      "all_frames": false
     }
   ],
+
   "web_accessible_resources": [
     {
-      "matches": ["https://*.dhan.co/*"],
-      "resources": ["audit.png"]
+      "resources": ["content.js"],
+      "matches": [
+        "https://tv.dhan.co/*",
+        "https://www.angelone.in/*",
+        "https://groww.in/*",
+        "https://tv.upstox.com/*",
+        "https://pro.upstox.com/*",
+        "https://kite-beta.zerodha.com/*"
+      ]
     }
   ]
 }

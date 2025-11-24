@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import BacktestingPopup from "./Popup/Popup";
 import BacktestButton from "./PopupToggleButton/PopupToggleButton";
-import InfoTooltip from "./components/Tooltip/Tooltip";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -23,6 +22,5 @@ createRoot(document.getElementById("root")).render(
 
     <BacktestingPopup />
     <BacktestButton />
-    <InfoTooltip title={"Capture Your Strategies"} position="left" />
   </StrictMode>
 );

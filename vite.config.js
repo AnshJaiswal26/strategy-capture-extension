@@ -13,12 +13,12 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "src/extension"),
     emptyOutDir: true,
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     rollupOptions: {
       input: [path.resolve(__dirname, "src/content.jsx")],
       output: {
         entryFileNames: "[name].js",
-        assetFileNames: "[name].[ext]",
+        assetFileNames: "[name][extname]",
       },
     },
   },

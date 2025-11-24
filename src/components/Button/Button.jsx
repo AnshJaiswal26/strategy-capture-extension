@@ -3,7 +3,7 @@ export default function Button({
   text,
   type = "fill",
   size = "medium",
-  onClick,
+  onClick = () => null,
   disable = false,
   title,
   toggle = false,
@@ -17,8 +17,8 @@ export default function Button({
         className={`${type}-btn ${toggle ? "enabled" : ""} ${size} ${
           disable ? "btn-disable" : ""
         }`}
-        onClick={() => (onClick ? onClick() : null)}
-        title={title ? title : ""}
+        onClick={onClick}
+        title={title || ""}
         disabled={disable}
       >
         {type !== "toggle" ? text : <div className="circle"></div>}

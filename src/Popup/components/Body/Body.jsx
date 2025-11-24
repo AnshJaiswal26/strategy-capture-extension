@@ -1,16 +1,19 @@
 import { useExtensionStore } from "@store";
-import RecentTab from "./components/RecentTab/RecentTab";
+import RecentTab from "./components/RecentTab";
 import AllCapturesTab from "./components/AllCapturesTab/AllCapturesTab";
 import CalculatorTab from "./components/CalculatorTab/CalculatorTab";
 import "./Body.css";
 
-export default function Body() {
-  const activeTab = useExtensionStore((s) => s.popupUI.Tab.currentTab);
+export default function Body({ updateStore }) {
+  const activeTabIndex = useExtensionStore((s) => s.activeTabIndex);
 
   return (
-    <div className="backtesting-popup-content">
-      {activeTab === "Recent" && <RecentTab />}
-      {activeTab === "All Captures" && <AllCapturesTab />}
+    <div
+      id="extension-popup-content"
+      className={activeTabIndex === 1 ? "tab-2-padding" : ""}
+    >
+      {activeTabIndex === 0 && <RecentTab updateStore={updateStore} />}
+      {activeTabIndex === 1 && <AllCapturesTab updateStore={updateStore} />}
       {/* {activeTab === "Charges Calculator" && <CalculatorTab />} */}
     </div>
   );

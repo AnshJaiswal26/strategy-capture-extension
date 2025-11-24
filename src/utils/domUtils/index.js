@@ -1,4 +1,4 @@
-export { injectButtonAndTooltipInIframe } from "./buttonInjectors";
+export { injectButtonInIframe } from "./buttonInjectors";
 export { readCanvasAndSync, initWorker } from "./canvasScrapper";
 export { trackPrice } from "./priceTracker";
 export { renderComponent } from "./renderComponent";

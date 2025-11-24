@@ -1,37 +1,12 @@
 import { create } from "zustand";
-import { popupUIUpdater } from "@utils";
+import { immer } from "zustand/middleware/immer";
 import { demoContent } from "@data";
 
-const getKeysToUpdate = (prev, updates) => {
-  const keysToUpdate = {};
-
-  for (const key in updates) {
-    if (prev[key] !== updates[key]) keysToUpdate[key] = updates[key];
-  }
-  return Object.keys(keysToUpdate).length > 0 ? keysToUpdate : null;
-};
-
-const commonUpdater = (prev, section, update) => {
-  const keysToUpdate = getKeysToUpdate(prev.popupUI, update);
-  if (!keysToUpdate) return prev;
-  return {
-    [section]: {
-      ...prev[section],
-      ...keysToUpdate,
-    },
-  };
-};
-
-export const useExtensionStore = create((set) => ({
-  popupUI: {
+export const useExtensionStore = create(
+  immer((set) => ({
     // ui
     isPopupOpen: false,
-    isDragging: false,
-    Tab: {
-      currentTab: "Recent",
-      width: "52.1458px",
-      transform: "translateX(0px)",
-    },
+    activeTabIndex: 0,
 
     // top inputs
     accountSize: 0,
@@ -39,40 +14,30 @@ export const useExtensionStore = create((set) => ({
     riskAmount: 300,
 
     // captureMap creater
-    captureMap: JSON.parse(localStorage.getItem("captureMap")) ?? demoContent,
-    inputCreaterLabel: "",
-    inputCreaterType: "Input",
-    addOptions: [""],
-    isUpdate: { value: false, index: 0 },
+    showInputGenerator: false,
+    captureMap: demoContent,
+    inputLabel: "",
+    inputType: "Input",
+    inputOptions: [""],
+    updatingIndex: null,
 
     // all captures
-    allCaptures: JSON.parse(localStorage.getItem("allCaptures")) ?? [],
+    allCaptures: [],
+    editingIndex: null,
     allCapturesUpdatingIdx: 0,
     isEdit: false,
     isAutoSaveEnabled: false,
     isSaved: false,
     tradeCountByDate: {},
 
-    //calculator
-    buyPrice: 0,
-    sellPrice: 0,
-    qty: 0,
-    pts: 0,
-    pnlAmount: 0,
-    pnlPercent: 0,
-
     //login
     isUserLogedIn: true,
-  },
+    userLoggedIn: true,
 
-  tooltipUI: { isVisible: false },
-
-  updateTooltipUI: (update) =>
-    set((prev) => commonUpdater(prev, "tooltipUI", update)),
-
-  updatePopupUI: (update) =>
-    set((prev) => commonUpdater(prev, "popupUI", update)),
-
-  updatePopupUIBatch: (sectionUpdates) =>
-    set((prev) => popupUIUpdater(prev, sectionUpdates)),
-}));
+    updateStore: (callback) => {
+      set((s) => {
+        callback(s);
+      });
+    },
+  }))
+);

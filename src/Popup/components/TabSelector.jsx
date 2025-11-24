@@ -1,43 +1,42 @@
 import { useExtensionStore } from "@store";
+import { useState, useRef, useLayoutEffect } from "react";
 
-export const moveIndicator = (e, tab, updater) => {
-  const currentTab = e.target;
-  const tabContainer = currentTab?.parentElement;
-  const activeTabRect = currentTab?.getBoundingClientRect();
-  const tabContainerRect = tabContainer?.getBoundingClientRect();
+export default function TabSelector({ tabs, updateStore }) {
+  const [indicator, setIndicator] = useState({
+    width: 52,
+    translateX: 0,
+  });
+  const activeTabIndex = useExtensionStore((s) => s.activeTabIndex);
 
-  if (!activeTabRect || !tabContainerRect) return;
+  const tabRefs = useRef([]);
 
-  const leftSpace = activeTabRect.left - tabContainerRect.left;
+  useLayoutEffect(() => {
+    const tabEl = tabRefs.current[activeTabIndex];
+    if (!tabEl) return;
 
-  updater([
-    {
-      name: "Tab",
-      payload: {
-        currentTab: tab,
-        width: `${activeTabRect.width}px`,
-        transform: `translateX(${leftSpace}px)`,
-      },
-    },
-  ]);
-};
-
-export default function TabSelector({ tabs, updatePopupUIBatch }) {
-  const activeTab = useExtensionStore((s) => s.popupUI.Tab.currentTab);
-  const width = useExtensionStore((s) => s.popupUI.Tab.width);
-  const transform = useExtensionStore((s) => s.popupUI.Tab.transform);
+    setIndicator((p) => ({
+      width: tabEl?.offsetWidth || p.width,
+      translateX: tabEl.offsetLeft || 0,
+    }));
+  }, [activeTabIndex]);
 
   return (
-    <div className="backtesting-popup-content-tab-selector">
-      <div className="backtesting-popup-content-tab-track-container">
-        <div className="backtesting-popup-content-tab-container">
+    <div className="tab-selector">
+      <div className="tab-track-container">
+        <div className="tab-container">
           {tabs.map((tab, index) => (
             <button
-              id={`tab-${tab.toLowerCase().split(" ").join("-")}`}
-              className={`tab${activeTab === tab ? " active" : ""}`}
               key={index}
-              onClick={(e) => moveIndicator(e, tab, updatePopupUIBatch)}
-              disabled={activeTab === tab}
+              ref={(el) => {
+                tabRefs.current[index] = el;
+              }}
+              className={`tab${activeTabIndex === index ? " active" : ""}`}
+              onClick={() =>
+                updateStore((s) => {
+                  s.activeTabIndex = index;
+                })
+              }
+              disabled={activeTabIndex === index}
             >
               {tab}
             </button>
@@ -45,8 +44,11 @@ export default function TabSelector({ tabs, updatePopupUIBatch }) {
 
           <div
             className="active-tab-indicator"
-            style={{ width: width, transform: transform }}
-          ></div>
+            style={{
+              width: `${indicator.width}px`,
+              transform: `translateX(${indicator.translateX}px)`,
+            }}
+          />
         </div>
       </div>
     </div>

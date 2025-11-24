@@ -1,13 +1,37 @@
 import Popup from "./Popup/Popup";
 import PopupToggleButton from "./PopupToggleButton/PopupToggleButton";
-import Tooltip from "./components/Tooltip/Tooltip";
-import { renderComponent, injectButtonAndTooltipInIframe } from "@utils";
-import "./content.css";
+import { renderComponent, injectButtonInIframe } from "@utils";
+import cssText from "./content.css?inline";
 
-if (window.location.href.includes("https://tv.dhan.co")) {
-  renderComponent("backtesting-extension-root", <Popup />, true);
-  injectButtonAndTooltipInIframe(
-    <PopupToggleButton _IS_EXTENSION_BUILD_={true} />,
-    <Tooltip title={"Capture Your Strategies"} position="left" />
+console.log("content script is loading......");
+
+const isDhan = location.href.includes("https://tv.dhan.co");
+
+const isAngelOne = location.href.includes(
+  "https://www.angelone.in/trade/pro-trader"
+);
+
+const isGroww = location.href.includes("https://groww.in/charts");
+
+const isUpstox =
+  location.href.includes("https://tv.upstox.com/trading-terminal/charts") ||
+  location.href.includes("https://pro.upstox.com");
+
+const isZerodha =
+  location.href.includes("https://kite.zerodha.com/markets/ext/chart") ||
+  location.href.includes("https://kite-beta.zerodha.com");
+
+if (isDhan || isAngelOne || isGroww || isUpstox || isZerodha) {
+  renderComponent(
+    "extension-shadow-root-wrapper",
+    <Popup />,
+    true,
+    true,
+    cssText
   );
+  injectButtonInIframe(
+    <PopupToggleButton _IS_EXTENSION_BUILD_={true} />,
+    isZerodha
+  );
+  console.log("content script loaded");
 }

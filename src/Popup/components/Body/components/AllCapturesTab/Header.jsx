@@ -4,9 +4,7 @@ import { useExtensionStore } from "@store";
 import { copyToClipBoard, handleEdit } from "./handlers";
 import { Copy, CopyCheckIcon, Pencil, Trash } from "lucide-react";
 
-export default function Header({ capture, index }) {
-  const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
-
+export default function Header({ capture, index, updateStore }) {
   return (
     <div className="tool-header">
       <div>
@@ -26,15 +24,21 @@ export default function Header({ capture, index }) {
           text={<Pencil size={15} />}
           type="hollow"
           size="very-small"
-          onClick={() => handleEdit([...capture], index, updatePopupUIBatch)}
+          onClick={() =>
+            updateStore((s) => {
+              s.activeTabIndex = 0;
+              s.captureMap = s.allCaptures[index];
+              s.editingIndex = index;
+            })
+          }
         />
         <Button
           text={<Trash size={15} />}
           size="very-small"
           onClick={() =>
-            updatePopupUIBatch([
-              { name: "allCaptures", operation: "delete", index },
-            ])
+            updateStore((s) => {
+              s.allCaptures.splice(index, 1);
+            })
           }
         />
       </div>

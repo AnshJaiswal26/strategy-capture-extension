@@ -1,39 +1,43 @@
 .toggle-popup-button {
+  all: unset;
   align-items: center;
+  color: var(--tv-color-toolbar-button-text, #131722);
+  cursor: default;
   display: flex;
   justify-content: center;
   position: relative;
-  border-radius: 8px;
-  margin: 1px 3px;
-  border: none;
-  background-color: inherit;
-  width: 39px;
-  height: 39px;
-}
-.toggle-popup-button svg {
-  color: #131722;
+  -webkit-user-select: none;
+  user-select: none;
+  height: 36px;
+  width: 52px;
 }
 
-.toggle-popup-button.active {
-  background-color: #e3effd;
+.toggle-popup-button span {
+  background-color: inherit;
+  padding: 5px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.toggle-popup-button svg {
+  height: 24px;
+  width: 24px;
+}
+
+html.theme-dark .toggle-popup-button {
+  color: var(--tv-color-toolbar-button-text, #d1d4dc);
 }
 
 .toggle-popup-button.active svg {
   color: #2962ff;
 }
 
-.toggle-popup-button.active:hover {
-  background-color: #bbd9fb;
+.toggle-popup-button:hover span {
+  background-color: #f0f4f9;
 }
 
-.toggle-popup-button.active img {
-  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(5000%)
-    hue-rotate(206deg);
-}
-
-.toggle-popup-button.active:hover img {
-  filter: brightness(0) saturate(100%) invert(10%) sepia(100%) saturate(5000%)
-    hue-rotate(206deg);
+html.theme-dark .toggle-popup-button:hover span {
+  background-color: inherit;
 }
 
 /*for app*/
@@ -42,13 +46,4 @@
   width: 40px;
   height: 40px;
   top: 181px;
-}
-
-.toggle-popup-button:hover {
-  background-color: #e8eef7a1;
-}
-
-.backtest-button-img {
-  width: 25px;
-  height: 25px;
 }

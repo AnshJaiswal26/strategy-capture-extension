@@ -1,36 +1,27 @@
-import { useEffect, useRef } from "react";
 import { useExtensionStore } from "@store";
 import "./PopupToggleButton.css";
 import { NotebookPen } from "lucide-react";
 
 export default function PopupToggleButton({ _IS_EXTENSION_BUILD_ = false }) {
-  const hoverTimeOutRef = useRef();
-  const updatePopupUI = useExtensionStore((s) => s.updatePopupUI);
-  const updateTooltipUI = useExtensionStore((s) => s.updateTooltipUI);
-  const isPopupOpen = useExtensionStore((s) => s.popupUI.isPopupOpen);
+  const isPopupOpen = useExtensionStore((s) => s.isPopupOpen);
 
-  const handleMouseEnter = () => {
-    hoverTimeOutRef.current = setTimeout(
-      () => updateTooltipUI({ isVisible: true }),
-      400
-    );
-  };
-
-  const handleMouseLeave = () => {
-    clearTimeout(hoverTimeOutRef.current);
-    updateTooltipUI({ isVisible: false });
-  };
+  const updateStore = useExtensionStore((s) => s.updateStore);
 
   return (
     <button
-      className={`toggle-popup-button ${isPopupOpen ? "active" : ""} ${
-        _IS_EXTENSION_BUILD_ ? "" : "web-app"
-      }`}
-      onClick={() => updatePopupUI({ isPopupOpen: !isPopupOpen })}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      data-tooltip="Capture your Strategies"
+      className={`toggle-popup-button apply-common-tooltip common-tooltip-vertical ${
+        isPopupOpen ? "active" : ""
+      } ${_IS_EXTENSION_BUILD_ ? "" : "web-app"}`}
+      onClick={() =>
+        updateStore((s) => {
+          s.isPopupOpen = !s.isPopupOpen;
+        })
+      }
     >
-      <NotebookPen strokeWidth={1} />
+      <span>
+        <NotebookPen strokeWidth={1} />
+      </span>
     </button>
   );
 }

@@ -1,58 +1,19 @@
+import { useState } from "react";
 import { useExtensionStore } from "@store";
 import { Button } from "@components";
-import { handleBtnClick } from "./handlers";
 
-export default function Footer() {
-  const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
-  const activeTab = useExtensionStore((s) => s.popupUI.Tab.currentTab);
-  const isEdit = useExtensionStore((s) => s.popupUI.isEdit);
-
-  const isAllCaptures = activeTab === "All Captures";
-  const isCalculator = activeTab === "Charges Calculator";
+export default function Footer({ updateStore }) {
+  const activeTabIndex = useExtensionStore((s) => s.activeTabIndex);
+  const isEditing = useExtensionStore((s) => s.editingIndex !== null);
 
   return (
     <div className="backtesting-popup-footer-wrapper">
       <div className="backtesting-popup-footer">
         <div className={`backtesting-popup-footer-btn-wrapper space`}>
-          {isAllCaptures ? (
-            <>
-              <ToggleButton updater={updatePopupUIBatch} />
-              <FirstBtn
-                isAllCaptures={isAllCaptures}
-                isEdit={isEdit}
-                updater={updatePopupUIBatch}
-              />
-            </>
-          ) : isCalculator ? (
-            <Button
-              text={"Ready Order"}
-              type={"fill"}
-              // onClick={() => handleBtnClick(1, updatePopupUIBatch)}
-            />
+          {activeTabIndex === 0 ? (
+            <Tab1Buttons updateStore={updateStore} isEditing={isEditing} />
           ) : (
-            <>
-              <Button
-                text="Logout"
-                type="hollow"
-                onClick={() =>
-                  updatePopupUIBatch([
-                    { name: "isUserLogedIn", payload: false },
-                  ])
-                }
-              />
-              <div className="footer-right-side-btn">
-                <FirstBtn
-                  isAllCaptures={isAllCaptures}
-                  isEdit={isEdit}
-                  updater={updatePopupUIBatch}
-                />
-                <Button
-                  text={isEdit ? "Update" : "Add"}
-                  type={isAllCaptures && isAutoSave ? "hollow" : "fill"}
-                  onClick={() => handleBtnClick(1, updatePopupUIBatch)}
-                />
-              </div>
-            </>
+            <Tab2Buttons />
           )}
         </div>
       </div>
@@ -60,32 +21,63 @@ export default function Footer() {
   );
 }
 
-function ToggleButton({ updater }) {
-  const isAutoSave = useExtensionStore((s) => s.popupUI.isAutoSaveEnabled);
-
+function Tab1Buttons({ updateStore, isEditing }) {
   return (
-    <Button
-      type="toggle"
-      text={"Auto-Save"}
-      toggle={isAutoSave}
-      onClick={() =>
-        updater([{ name: "isAutoSaveEnabled", operation: "toggle" }])
-      }
-    />
+    <>
+      <Button
+        text="Logout"
+        type="hollow"
+        onClick={() =>
+          updateStore((s) => {
+            s.userLoggedIn = false;
+          })
+        }
+      />
+      <div className="footer-right-side-btn">
+        {isEditing && (
+          <Button
+            text="Cancel"
+            type="hollow"
+            onClick={() =>
+              updateStore((s) => {
+                s.editingIndex = null;
+              })
+            }
+          />
+        )}
+        <Button
+          text={isEditing ? "Update" : "Add"}
+          type="fill"
+          onClick={() =>
+            updateStore((s) => {
+              const arr = s.allCaptures;
+              if (s.editingIndex !== null && arr?.[s.editingIndex]) {
+                Object.assign(arr[s.editingIndex], s.captureMap);
+              } else arr.push(s.captureMap);
+
+              s.editingIndex = null;
+              s.activeTabIndex = 1;
+            })
+          }
+        />
+      </div>
+    </>
   );
 }
 
-function FirstBtn({ isAllCaptures, isEdit, updater }) {
-  const isSaved = useExtensionStore((s) => s.popupUI.isSaved);
-  const isAutoSave = useExtensionStore((s) => s.popupUI.isAutoSaveEnabled);
+function Tab2Buttons() {
+  const [autoSave, setAutoSave] = useState(false);
 
   return (
-    <Button
-      text={isAllCaptures ? "Save" : isEdit ? "Cancel" : "Clear"}
-      type={isSaved ? "fill" : "hollow"}
-      onClick={() => handleBtnClick(0, updater)}
-      disable={isAllCaptures && isAutoSave}
-    />
+    <>
+      <Button
+        type="toggle"
+        text={"Auto-Save"}
+        toggle={autoSave}
+        onClick={() => setAutoSave((p) => !p)}
+      />
+      <Button text="Save" type="hollow" onClick={() => null} />
+    </>
   );
 }
 

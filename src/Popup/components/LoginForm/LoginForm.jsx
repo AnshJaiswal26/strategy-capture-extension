@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./LoginForm.css";
 import { Button, Loading } from "@components";
 
-export default function LoginForm({ updater }) {
+export default function LoginForm({ updateStore }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -18,9 +18,10 @@ export default function LoginForm({ updater }) {
 
     setTimeout(() => {
       setIsLoading(false);
-      updater([{ name: "isUserLogedIn", payload: true }]);
+      updateStore((s) => {
+        s.isUserLogedIn = true;
+      });
     }, 2000);
-    // TODO: call backend API here
   };
 
   return (

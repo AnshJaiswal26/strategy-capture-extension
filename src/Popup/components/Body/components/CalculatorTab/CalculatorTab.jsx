@@ -1,11 +1,7 @@
-import { ButtonSelector, Input, TopDownSlider } from "@components";
-import { useExtensionStore } from "@store";
-// import { handleChange } from "./handlers";
+import { Input, TopDownSlider } from "@components";
 import { inputs } from "./data";
 
 export default function CalculatorTab() {
-  const updatePopupUIBatch = useExtensionStore((s) => s.updatePopupUIBatch);
-
   return (
     <div className="calculator-charges-wrapper">
       <TopDownSlider title={"Charges Panel"}>
@@ -15,7 +11,7 @@ export default function CalculatorTab() {
         <Input
           label={"Risk/Reward"}
           type={"text"}
-          // selector={(s) => s.popupUI["Risk/Reward"]}
+          // selector={(s) => s["Risk/Reward"]}
           // onChange={(v) => handleChange(input.field, v, updatePopupUIBatch)}
         />
         <div className="calculator-wrapper">
@@ -28,7 +24,7 @@ export default function CalculatorTab() {
                 key={`input_${i}`}
                 label={input.label}
                 type={"text"}
-                selector={(s) => s.popupUI[input.field]}
+                selector={(s) => s[input.field]}
                 // onChange={(v) => handleChange(input.field, v, updatePopupUIBatch)}
               />
             ))}

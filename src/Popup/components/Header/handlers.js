@@ -1,39 +1,43 @@
-let initialX = 0;
-let initialY = 0;
+let offsetX = 0;
+let offsetY = 0;
+
+export const handleMouseDown = (e, popupRef) => {
+  if (e.target.closest(".backtesting-popup-close-btn")) return;
+
+  const popup = popupRef.current;
+  const rect = popup.getBoundingClientRect();
+
+  // Store difference between mouse & popup
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+
+  document.onmousemove = (event) => handleMouseMove(event, popup);
+  document.onmouseup = handleMouseUp;
+};
 
 export const handleMouseMove = (e, popup) => {
   e.preventDefault();
 
-  const minVisibleX = 75;
-  const minVisibleY = 40;
-  const maxLeft = window.innerWidth - minVisibleX;
-  const maxTop = window.innerHeight - minVisibleY;
+  // New absolute position
+  let newLeft = e.clientX - offsetX;
+  let newTop = e.clientY - offsetY;
 
-  const newLeft = e.clientX - initialX;
-  const newTop = e.clientY - initialY;
+  const popupRect = popup.getBoundingClientRect();
 
-  const rect = popup.getBoundingClientRect();
-  popup.style.left =
-    Math.min(Math.max(minVisibleX - rect.width, newLeft), maxLeft) + "px";
-  popup.style.top =
-    Math.min(Math.max(Math.max(minVisibleY - rect.height, 0), newTop), maxTop) +
-    "px";
+  // boundaries
+  const minX = -(popupRect.width - 40);
+  const maxX = window.innerWidth - 40;
+  const minY = 0;
+  const maxY = window.innerHeight - 40;
+
+  newLeft = Math.max(minX, Math.min(newLeft, maxX));
+  newTop = Math.max(minY, Math.min(newTop, maxY));
+
+  popup.style.left = newLeft + "px";
+  popup.style.top = newTop + "px";
 };
 
 export const handleMouseUp = () => {
   document.onmousemove = null;
   document.onmouseup = null;
-};
-
-export const handleMouseDown = (e) => {
-  if (e.target.closest(".backtesting-popup-close-btn")) return;
-
-  const popup = document.getElementById("find-my-edge-capture-popup");
-
-  const rect = popup.getBoundingClientRect();
-  initialX = e.clientX - rect.left;
-  initialY = e.clientY - rect.top;
-
-  document.onmousemove = (e) => handleMouseMove(e, popup);
-  document.onmouseup = handleMouseUp;
 };

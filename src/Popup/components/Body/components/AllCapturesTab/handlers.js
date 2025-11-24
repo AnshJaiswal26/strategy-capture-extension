@@ -1,4 +1,5 @@
 export const handleDownload = (allCaptures) => {
+  const max = Math.max(...allCaptures.map((r) => r.length));
   const csvContent = allCaptures
     .map((row) => row.map(({ value }) => value).join(","))
     .join("\n");

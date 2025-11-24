@@ -20,7 +20,9 @@ function Input({ label, type, options, selector, onChange, placeholder }) {
           {type === "dropdown" ? (
             <select
               className="backtesting-popup-input"
-              onChange={(e) => (onChange ? onChange(e.target.value) : null)}
+              onChange={(e) => {
+                onChange ? onChange(e.target.value) : null;
+              }}
               value={value}
             >
               {options?.map((option, index) => (

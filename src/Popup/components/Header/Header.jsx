@@ -1,10 +1,12 @@
-import { useRef } from "react";
 import { handleMouseDown } from "./handlers";
 
-export default function Header({ updatePopupUI, popupRef }) {
+export default function Header({ updateStore, popupRef }) {
   return (
     <div className="backtesting-popup-header-wrapper">
-      <div className="backtesting-popup-header" onMouseDown={handleMouseDown}>
+      <div
+        className="backtesting-popup-header"
+        onMouseDown={(e) => handleMouseDown(e, popupRef)}
+      >
         <div className="backtesting-popup-header-title">
           <span>Strategy Capture</span>
         </div>
@@ -13,7 +15,9 @@ export default function Header({ updatePopupUI, popupRef }) {
           <button
             className="backtesting-popup-close-btn"
             onClick={() => {
-              updatePopupUI({ isPopupOpen: false });
+              updateStore((s) => {
+                s.isPopupOpen = false;
+              });
             }}
           >
             <svg

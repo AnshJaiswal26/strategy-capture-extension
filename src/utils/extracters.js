@@ -1,10 +1,12 @@
-const days = {
-  Mon: "Monday",
-  Tue: "Tuesday",
-  Wed: "Wednesday",
-  Thu: "Thursday",
-  Fri: "Friday",
-};
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 const monthMap = {
   Jan: 0,
@@ -43,18 +45,39 @@ export const extractPriceResults = (prices, result = "profit") => {
     "Trade Number": "Trade 1",
   };
 };
-
 export const extractTimeResults = (timeText) => {
   const regex =
-    /(?<day>[A-Z]{2,3})\s*(?<date>\d{1,2})\s*(?<month>[A-Z]{3})\s*(?<year>\d{2,4})\s*(?<time>\d{2}:\d{2})/gi;
-  const matches = [...timeText.matchAll(regex)];
+    /(?:(?<day>[A-Za-z]{3})\s+)?(?<date>\d{1,2})\s+(?<month>Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+'?(?<year>\d{2,4})(?:\s+(?<time>\d{1,2}:\d{2}))?/g;
 
-  const { date, month, year, day, time } = matches[0].groups;
+  const rawMatches = [...timeText.matchAll(regex)];
 
-  const dateFormat = new Date(
-    Date.UTC(parseInt(`20${year}`), monthMap[month], parseInt(date))
+  // remove invalid matches
+  const matches = rawMatches.filter(
+    (m) => m.groups.date && m.groups.month && m.groups.year
   );
-  const isoDate = dateFormat.toISOString().slice(0, 10);
 
-  return { Date: isoDate, Day: days[day], Time: time };
+  if (matches.length === 0) return null;
+
+  let match = matches[0];
+
+  // If the first one has no time and second exists → use second
+  if (!match.groups.time && matches.length > 1) {
+    match = matches[1];
+  }
+
+  console.log(matches[0], matches[1]);
+
+  const { date, month, year, time } = match.groups;
+
+  const fullYear = year.length === 2 ? `20${year}` : year;
+
+  const jsDate = new Date(
+    Date.UTC(parseInt(fullYear), monthMap[month], parseInt(date))
+  );
+
+  return {
+    Date: jsDate.toISOString().slice(0, 10),
+    Day: days[jsDate.getUTCDay() - 1],
+    Time: time ?? null,
+  };
 };

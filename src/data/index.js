@@ -31,29 +31,54 @@ export const mapping = {
     dropdown: "Dropdown",
   },
 };
+export const labels = {
+  number: "Number",
+  time: "Time",
+  date: "Date",
+  text: "Text",
+  dropdown: "Dropdown",
+};
+
+export const inputTypes = {
+  None: "text",
+  Time: "time",
+  Date: "date",
+  Day: "text",
+  "Time Frame": "text",
+  Symbol: "text",
+  "Risk/Reward": "text",
+  Pnl: "number",
+  "Cummulative Pnl": "number",
+  Result: "text",
+};
 
 export const demoContent = [
-  { label: "Time", type: "time", value: "06:02:50", mappingKey: "Time" },
-  { label: "Date", type: "date", value: "2025-09-16", mappingKey: "Date" },
-  { label: "Day", type: "text", value: "Monday", mappingKey: "Day" },
+  { label: "Time", type: "time", value: "06:02:50", mappedWith: "Time" },
+  {
+    label: "Date",
+    type: "date",
+    value: "2025-09-16",
+    mappedWith: "Date",
+  },
+  { label: "Day", type: "text", value: "Monday", mappedWith: "Day" },
   {
     label: "Trade",
     type: "text",
     value: "Trade 1",
-    mappingKey: "Trade Number",
+    mappedWith: "Trade Number",
   },
-  { label: "Result", type: "text", value: "Target", mappingKey: "Result" },
+  { label: "Result", type: "text", value: "Target", mappedWith: "Result" },
   {
     label: "Risk/Reward",
     type: "text",
     value: "1:2",
-    mappingKey: "Risk/Reward",
+    mappedWith: "Risk/Reward",
   },
   {
     label: "Time Frame",
     type: "text",
     value: "3 minutes",
-    mappingKey: "Time Frame",
+    mappedWith: "Time Frame",
   },
   {
     label: "Entry Candle",
@@ -61,7 +86,7 @@ export const demoContent = [
     options: ["Engulfing", "Spinning Top", "Pin Bar"],
     value: "Engulfing",
   },
-  { label: "Pnl", type: "number", value: 1000, mappingKey: "Pnl" },
+  { label: "Pnl", type: "number", value: 1000, mappedWith: "Pnl" },
   {
     label: "Pullbacks",
     type: "dropdown",

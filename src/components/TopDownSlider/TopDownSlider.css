@@ -38,7 +38,7 @@
 .top-down-slider-content-wrapper.expand {
   overflow-y: scroll;
   scrollbar-width: none;
-  max-height: 250px; /* set larger than expected content */
+  max-height: 280px; /* set larger than expected content */
 }
 
 .title-wrapper div:last-child svg {

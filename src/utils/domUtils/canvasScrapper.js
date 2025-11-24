@@ -5,6 +5,7 @@ import {
   extractPriceResults,
 } from "@utils";
 import { useExtensionStore } from "@store";
+import { handleChange } from "../../Popup/components/Body/components/RecentTab/handlers";
 
 let ocrWorker1;
 export const initWorker = async () => {
@@ -19,11 +20,10 @@ const getBlob = (canvas) =>
     canvas.toBlob((blob) => resolve(blob), "image/png");
   });
 
-export async function readTimeCanvas(timeCanvas) {
+async function readCanvas(timeCanvas) {
   const worker = await initWorker();
 
   const blob = await getBlob(timeCanvas);
-
   const result = await worker.recognize(blob, "eng", {
     tessedit_char_whitelist:
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789: ",
@@ -31,15 +31,8 @@ export async function readTimeCanvas(timeCanvas) {
     tessedit_pageseg_mode: "11",
   });
 
-  const timeText = result.data.text;
-
-  return timeText;
+  return result.data.text;
 }
-
-const updateTradeCountByDate = (prev, date) => {
-  const count = (prev?.[date] || 0) + 1;
-  return { newCounts: { ...prev, [date]: count }, count };
-};
 
 export async function readCanvasAndSync(doc, prices) {
   console.time("Canvas Process");
@@ -52,39 +45,39 @@ export async function readCanvasAndSync(doc, prices) {
 
   //finding top toolbar
   const topArea = root?.getElementsByClassName("layout__area--top")[0];
-  const topToolbar = topArea?.querySelector(`div[role="toolbar"]`);
-  const topButtons = topToolbar?.getElementsByTagName("button");
+  const topButtons = topArea?.getElementsByTagName("button");
 
-  const symbol = topButtons[0].textContent;
-  const timeFrame = topButtons[2].getAttribute("aria-label");
+  const buttons = topButtons
+    ? topButtons
+    : topToolbar?.querySelectorAll(`[data-role="button"]`);
+
+  const symbol = buttons[0].textContent;
+  const timeAttribute = buttons[2].getAttribute("aria-label");
+  const timeFrame = timeAttribute
+    ? timeAttribute
+    : buttons[2].getAttribute("title");
 
   const cleanedTimeCanvas = createCleanCanvas(timeCanvas);
 
-  const timeText = await readTimeCanvas(cleanedTimeCanvas);
+  const timeText = await readCanvas(cleanedTimeCanvas);
   const extractedTimeData = extractTimeResults(timeText);
   const extractedPriceData = extractPriceResults(prices);
 
-  const storeState = useExtensionStore.getState();
-  const popupUI = storeState.popupUI;
-  const riskAmount = popupUI.riskAmount;
-
   const data = { ...extractedTimeData, ...extractedPriceData };
-  data.Pnl = riskAmount * data["Risk/Reward"];
   data["Symbol"] = symbol;
   data["Time Frame"] = timeFrame;
   data["Risk/Reward"] = `1:${data["Risk/Reward"]}`;
 
-  const { newCounts, count } = updateTradeCountByDate(
-    popupUI.tradeCountByDate,
-    data.Date
-  );
+  const updateStore = useExtensionStore.getState().updateStore;
 
-  const updater = storeState.updatePopupUIBatch;
-  updater([
-    { name: "captureMap", payload: data, operation: "batchUpdate" },
-    { name: "isPopupOpen", payload: true },
-    { name: "tradeCountByDate", payload: newCounts },
-  ]);
+  updateStore((s) => {
+    data.Pnl = s.riskAmount * data["Risk/Reward"];
+    s.captureMap.forEach(({ mappedWith }, index) => {
+      if (data?.[mappedWith])
+        handleChange(mappedWith, data[mappedWith], s, index);
+    });
+    s.isPopupOpen = true;
+  });
 
   console.timeEnd("Canvas Process");
 }
