@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button } from "@components";
-import { useExtensionStore } from "@store";
-import { copyToClipBoard, handleEdit } from "./handlers";
-import { Copy, CopyCheckIcon, Pencil, Trash } from "lucide-react";
+import { copyToClipBoard } from "./handlers";
+import { Copy, CopyCheckIcon, Pencil, Trash2 } from "lucide-react";
 
 export default function Header({ capture, index, updateStore }) {
   return (
@@ -33,7 +32,7 @@ export default function Header({ capture, index, updateStore }) {
           }
         />
         <Button
-          text={<Trash size={15} />}
+          text={<Trash2 size={15} />}
           size="very-small"
           onClick={() =>
             updateStore((s) => {

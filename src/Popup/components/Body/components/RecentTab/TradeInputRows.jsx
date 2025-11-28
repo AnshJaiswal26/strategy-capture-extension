@@ -1,6 +1,6 @@
-import { Pencil, Trash } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { Button, Input, Label } from "@components";
-import { mapping } from "@data";
+import { FIELD_TYPES, MAPPINGS } from "@constants";
 import { useExtensionStore } from "@store";
 import { handleChange } from "./handlers";
 import { useState } from "react";
@@ -51,7 +51,9 @@ function InputGridRows({ updateStore }) {
   return captureMap.map((input, index) => (
     <div
       key={index}
-      className={`input-row ${index === drag.over ? "drag-over" : ""}`}
+      className={`input-row ${index === drag.over ? "drag-over" : ""} ${
+        input.type !== "dropdown" ? "dropdown-row" : ""
+      }`}
       draggable={true}
       onDragStart={() => setDrag({ start: index, over: index })}
       onDragEnter={() => setDrag((p) => ({ ...p, over: index }))}
@@ -69,12 +71,12 @@ function InputGridRows({ updateStore }) {
       {input.type !== "dropdown" ? (
         <Input
           type="dropdown"
-          options={mapping.keys}
+          options={MAPPINGS}
           selector={(s) => s.captureMap[index].mappedWith}
           onChange={(v) => {
             updateStore((s) => {
               const obj = s.captureMap[index];
-              Object.assign(obj, { mappedWith: v, type: mapping.type[v] });
+              Object.assign(obj, { mappedWith: v });
             });
           }}
         />
@@ -91,7 +93,7 @@ function InputGridRows({ updateStore }) {
               Object.assign(s, {
                 ...(input?.options && { inputOptions: input.options }),
                 inputLabel: input.label,
-                inputType: mapping.reverseType[input.type],
+                inputType: FIELD_TYPES[input.type],
                 updatingIndex: index,
                 showInputGenerator: true,
               });
@@ -106,7 +108,7 @@ function InputGridRows({ updateStore }) {
           }}
         />
         <Button
-          text={<Trash size={16} />}
+          text={<Trash2 size={16} />}
           size="small"
           type="fill"
           onClick={() =>

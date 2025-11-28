@@ -11,9 +11,9 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: path.resolve(__dirname, "src/extension"),
+    outDir: path.resolve(__dirname, "extension"),
     emptyOutDir: true,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     rollupOptions: {
       input: [path.resolve(__dirname, "src/content.jsx")],
       output: {
@@ -24,10 +24,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "@": path.resolve(__dirname, "src"),
       "@components": path.resolve(__dirname, "src/components"),
       "@store": path.resolve(__dirname, "src/stores/useExtensionStore"),
       "@utils": path.resolve(__dirname, "src/utils"),
-      "@data": path.resolve(__dirname, "src/data"),
+      "@constants": path.resolve(__dirname, "src/constants"),
       "@hooks": path.resolve(__dirname, "src/hooks"),
     },
   },

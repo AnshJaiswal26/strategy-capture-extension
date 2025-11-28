@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useExtensionStore } from "@store";
-import { Header, TabSelector, Body, Footer } from "./components/index";
+import { Header, Body, Footer } from "./components";
 import "./Popup.css";
-import { initWorker } from "@utils";
 import LoginForm from "./components/LoginForm/LoginForm";
-import { Loading } from "@components";
+import { Loading, TabSelector } from "@components";
 
 export default function Popup() {
   const popupRef = useRef(null);
 
   const isPopupOpen = useExtensionStore((s) => s.isPopupOpen);
-  const isUserLogedIn = useExtensionStore((s) => s.isUserLogedIn);
+  const userLoggedIn = useExtensionStore((s) => s.userLoggedIn);
 
   const updateStore = useExtensionStore((s) => s.updateStore);
-
-  useEffect(() => {
-    const initializeWorkers = async () => await initWorker();
-    initializeWorkers();
-  }, []);
 
   return (
     <div
@@ -30,7 +24,7 @@ export default function Popup() {
     >
       <Header updateStore={updateStore} popupRef={popupRef} />
 
-      {!isUserLogedIn ? (
+      {!userLoggedIn ? (
         <LoginForm updateStore={updateStore} />
       ) : (
         <>

@@ -1,5 +1,5 @@
 import { Button } from "@components";
-import { mapping } from "@data";
+import { MAPPINGS } from "@constants";
 import { useExtensionStore } from "@store";
 import { X } from "lucide-react";
 
@@ -38,19 +38,19 @@ export default function AddButton({ updateStore }) {
   const handleClick = (s) => {
     const label = s.inputLabel;
     const type = s.inputType.toLowerCase();
-    const mappedWith = mapping.keys.includes(label) ? label : "None";
+    const mappedWith = MAPPINGS.includes(label) ? label : "None";
 
     const payload = {
       label,
       type,
       ...(type === "dropdown" && { options: s.inputOptions }),
-      ...(!updatingIndex && {
-        value: ["date", "time", "day"].includes(type) ? timeAndDate() : 0,
+      ...(updatingIndex === null && {
+        value: ["date", "time", "day"].includes(type) ? timeAndDate(type) : 0,
         mappedWith,
       }),
     };
 
-    if (updatingIndex) {
+    if (updatingIndex !== null) {
       Object.assign(s.captureMap[updatingIndex], payload);
       resetInputs(s);
     } else {
@@ -75,7 +75,7 @@ export default function AddButton({ updateStore }) {
     <>
       <div className="add-button-wrapper">
         <Button
-          text={updatingIndex ? "Update" : "Add"}
+          text={updatingIndex !== null ? "Update" : "Add"}
           type="fill"
           size="medium"
           title={
@@ -90,7 +90,7 @@ export default function AddButton({ updateStore }) {
           disable={isOptionsLengthZero || isLabelEmpty || isAnyOptionEmpty}
           onClick={() => updateStore(handleClick)}
         />
-        {updatingIndex && (
+        {updatingIndex !== null && (
           <Button
             text={<X size={18} />}
             type="fill"

@@ -26,26 +26,32 @@ export default function AllCapturesTab({ updateStore }) {
         )}
       </div>
 
-      {allCaptures.length === 0 ? (
-        <div className="no-input-found">
-          <span>No Captures Found</span>
-        </div>
-      ) : (
-        allCaptures.map((capture, index) => (
-          <div className="all-captures-row-wrapper" key={index}>
-            <Header capture={capture} index={index} updateStore={updateStore} />
-
-            <div className="all-captures-row">
-              {capture.map(({ label, value }, i) => (
-                <div className="column" key={i}>
-                  <div className="key">{label}</div>
-                  <div className="value">{value}</div>
-                </div>
-              ))}
-            </div>
+      <div className="all-captures-content-wrapper">
+        {allCaptures.length === 0 ? (
+          <div className="no-input-found">
+            <span>No Captures Found</span>
           </div>
-        ))
-      )}
+        ) : (
+          allCaptures.map((capture, index) => (
+            <div className="all-captures-row-wrapper" key={index}>
+              <Header
+                capture={capture}
+                index={index}
+                updateStore={updateStore}
+              />
+
+              <div className="all-captures-row">
+                {capture.map(({ label, value }, i) => (
+                  <div className="column" key={i}>
+                    <div className="key">{label}</div>
+                    <div className="value">{value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </>
   );
 }

@@ -1,27 +1,19 @@
 import Popup from "./Popup/Popup";
 import PopupToggleButton from "./PopupToggleButton/PopupToggleButton";
-import { renderComponent, injectButtonInIframe } from "@utils";
+import { renderComponent, injectButtonInIframe, injectScript } from "@utils";
 import cssText from "./content.css?inline";
 
-console.log("content script is loading......");
+const brokerUrls = [
+  "https://tv.dhan.co",
+  "https://www.angelone.in/trade/pro-trader",
+  "https://groww.in/charts",
+  "https://tv.upstox.com/trading-terminal/charts",
+  "https://pro.upstox.com",
+];
 
-const isDhan = location.href.includes("https://tv.dhan.co");
+const isValidBroker = brokerUrls.some((url) => location.href.includes(url));
 
-const isAngelOne = location.href.includes(
-  "https://www.angelone.in/trade/pro-trader"
-);
-
-const isGroww = location.href.includes("https://groww.in/charts");
-
-const isUpstox =
-  location.href.includes("https://tv.upstox.com/trading-terminal/charts") ||
-  location.href.includes("https://pro.upstox.com");
-
-const isZerodha =
-  location.href.includes("https://kite.zerodha.com/markets/ext/chart") ||
-  location.href.includes("https://kite-beta.zerodha.com");
-
-if (isDhan || isAngelOne || isGroww || isUpstox || isZerodha) {
+if (isValidBroker) {
   renderComponent(
     "extension-shadow-root-wrapper",
     <Popup />,
@@ -29,9 +21,7 @@ if (isDhan || isAngelOne || isGroww || isUpstox || isZerodha) {
     true,
     cssText
   );
-  injectButtonInIframe(
-    <PopupToggleButton _IS_EXTENSION_BUILD_={true} />,
-    isZerodha
-  );
-  console.log("content script loaded");
+  injectButtonInIframe(<PopupToggleButton _IS_EXTENSION_BUILD_={true} />);
+
+  injectScript(chrome.runtime.getURL("injected.js"));
 }

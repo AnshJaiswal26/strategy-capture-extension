@@ -1,0 +1,56 @@
+/* Tab Selector */
+.tab-selector {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0px 20px;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+.tab-track-container {
+  position: relative;
+  display: flex;
+}
+
+.tab-track-container::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #e0e5f57e;
+  height: 4px;
+  border-radius: 5px;
+}
+
+.tab-container {
+  display: flex;
+  position: relative;
+  gap: 24px;
+}
+
+.tab-track-container .tab {
+  outline: none;
+  background: #ffffff;
+  position: relative;
+  font-size: 16px;
+  margin-bottom: 8px;
+  padding: 0;
+  text-align: center;
+  font-weight: bold;
+  color: #000000;
+  border: none;
+}
+
+.tab-track-container .tab:hover {
+  color: #5b5b5b;
+}
+
+.active-tab-indicator {
+  position: absolute;
+  background: black;
+  height: 4px;
+  border-radius: 3px;
+  bottom: 0;
+  transition: transform 0.1s ease, width 0.1s ease;
+}

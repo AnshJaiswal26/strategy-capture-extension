@@ -19,8 +19,13 @@
 To test the extension locally:
 
 1. Clone or download this repository.
-2. Inside the repository, locate the `src/Strategy-Capture-Extension` folder — this is the built Chrome extension folder.
+2. Inside the repository (`strategy-capture-extension`), locate the `extension` folder — this is the built Chrome extension folder.
 3. Open Chrome and go to `chrome://extensions/`.
 4. Enable **Developer mode** (top-right corner).
-5. Click **Load unpacked** and select the `src/extension` folder.
-6. Open [tv.dhan.co](https://tv.dhan.co/) in Chrome and test the extension features.
+5. Click **Load unpacked** and select the `extension` folder.
+6. Open your preferred platform and test the extension — it now works across all supported brokers:
+   - Dhan: https://tv.dhan.co/
+   - AngelOne: https://www.angelone.in/trade/pro-trader
+   - Groww: https://groww.in/charts
+   - Upstox TV: https://tv.upstox.com/
+   - Upstox Pro: https://pro.upstox.com/

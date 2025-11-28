@@ -1,5 +1,6 @@
 import { useExtensionStore } from "@store";
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import "./TabSelector.css";
 
 export default function TabSelector({ tabs, updateStore }) {
   const [indicator, setIndicator] = useState({
@@ -10,7 +11,7 @@ export default function TabSelector({ tabs, updateStore }) {
 
   const tabRefs = useRef([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const tabEl = tabRefs.current[activeTabIndex];
     if (!tabEl) return;
 

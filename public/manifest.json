@@ -11,8 +11,7 @@
     "https://www.angelone.in/*",
     "https://groww.in/*",
     "https://tv.upstox.com/*",
-    "https://pro.upstox.com/*",
-    "https://kite-beta.zerodha.com/*"
+    "https://pro.upstox.com/*"
   ],
 
   "content_scripts": [
@@ -22,8 +21,7 @@
         "https://www.angelone.in/*",
         "https://groww.in/*",
         "https://tv.upstox.com/*",
-        "https://pro.upstox.com/*",
-        "https://kite-beta.zerodha.com/*"
+        "https://pro.upstox.com/*"
       ],
       "js": ["content.js"],
       "run_at": "document_idle",
@@ -33,14 +31,13 @@
 
   "web_accessible_resources": [
     {
-      "resources": ["content.js"],
+      "resources": ["injected.js"],
       "matches": [
         "https://tv.dhan.co/*",
         "https://www.angelone.in/*",
         "https://groww.in/*",
         "https://tv.upstox.com/*",
-        "https://pro.upstox.com/*",
-        "https://kite-beta.zerodha.com/*"
+        "https://pro.upstox.com/*"
       ]
     }
   ]

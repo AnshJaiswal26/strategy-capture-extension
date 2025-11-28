@@ -2,13 +2,15 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
+      "@/*": ["*"],
       "@components": ["components"],
       "@store": ["stores/useExtensionStore"],
+      "@constants": ["constants"],
       "@utils": ["utils"],
       "@data": ["data"],
       "@hooks": ["hooks"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "public/injected.js"],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,37 +1,16 @@
-export const mapping = {
-  keys: [
-    "None",
-    "Time",
-    "Date",
-    "Day",
-    "Time Frame",
-    "Symbol",
-    "Risk/Reward",
-    "Pnl",
-    "Cummulative Pnl",
-    "Result",
-  ],
-  type: {
-    None: "text",
-    Time: "time",
-    Date: "date",
-    Day: "text",
-    "Time Frame": "text",
-    Symbol: "text",
-    "Risk/Reward": "text",
-    Pnl: "number",
-    "Cummulative Pnl": "number",
-    Result: "text",
-  },
-  reverseType: {
-    number: "Number",
-    time: "Time",
-    date: "Date",
-    text: "Text",
-    dropdown: "Dropdown",
-  },
-};
-export const labels = {
+export const MAPPINGS = [
+  "None",
+  "Time",
+  "Date",
+  "Day",
+  "Time Frame",
+  "Symbol",
+  "Risk/Reward",
+  "Pnl",
+  "Result",
+];
+
+export const FIELD_TYPES = {
   number: "Number",
   time: "Time",
   date: "Date",
@@ -39,20 +18,7 @@ export const labels = {
   dropdown: "Dropdown",
 };
 
-export const inputTypes = {
-  None: "text",
-  Time: "time",
-  Date: "date",
-  Day: "text",
-  "Time Frame": "text",
-  Symbol: "text",
-  "Risk/Reward": "text",
-  Pnl: "number",
-  "Cummulative Pnl": "number",
-  Result: "text",
-};
-
-export const demoContent = [
+export const DEMO_FIELDS = [
   { label: "Time", type: "time", value: "06:02:50", mappedWith: "Time" },
   {
     label: "Date",

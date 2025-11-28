@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { demoContent } from "@data";
+import { DEMO_FIELDS } from "@constants";
 
 export const useExtensionStore = create(
   immer((set) => ({
@@ -15,7 +15,7 @@ export const useExtensionStore = create(
 
     // captureMap creater
     showInputGenerator: false,
-    captureMap: demoContent,
+    captureMap: DEMO_FIELDS,
     inputLabel: "",
     inputType: "Input",
     inputOptions: [""],
@@ -31,7 +31,6 @@ export const useExtensionStore = create(
     tradeCountByDate: {},
 
     //login
-    isUserLogedIn: true,
     userLoggedIn: true,
 
     updateStore: (callback) => {

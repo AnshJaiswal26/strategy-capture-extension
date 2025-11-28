@@ -19,7 +19,7 @@ export default function LoginForm({ updateStore }) {
     setTimeout(() => {
       setIsLoading(false);
       updateStore((s) => {
-        s.isUserLogedIn = true;
+        s.userLoggedIn = true;
       });
     }, 2000);
   };
