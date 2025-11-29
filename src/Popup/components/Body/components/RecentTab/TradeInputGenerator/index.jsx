@@ -30,7 +30,7 @@ export default function TradeInputGenerator({ updateStore }) {
             label={"Type"}
             type={"dropdown"}
             selector={(s) => s.inputType}
-            options={["Number", "Text", "Dropdown", "Time", "Date"]}
+            options={["Text", "Number", "Dropdown", "Time", "Date"]}
             onChange={(v) =>
               updateStore((s) => {
                 s.inputType = v;

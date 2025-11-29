@@ -1,14 +1,12 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { Button, Input, Label } from "@components";
-import { FIELD_TYPES, MAPPINGS } from "@constants";
+import { FIELD_TYPES, MAPPING_TYPES, MAPPINGS } from "@constants";
 import { useExtensionStore } from "@store";
 import { handleChange } from "./handlers";
 import { useState } from "react";
 
 export default function TradeInputRows({ updateStore }) {
-  const isLengthZero = useExtensionStore(
-    (s) => s.captureMap.currentLength === 0
-  );
+  const isLengthZero = useExtensionStore((s) => s.tradeInputs.length === 0);
 
   if (isLengthZero) {
     return (
@@ -27,20 +25,20 @@ export default function TradeInputRows({ updateStore }) {
         <div className="filler" />
       </div>
 
-      <InputGridRows updateStore={updateStore} />
+      <TradeInputsGrid updateStore={updateStore} />
     </div>
   );
 }
 
-function InputGridRows({ updateStore }) {
+function TradeInputsGrid({ updateStore }) {
   const [drag, setDrag] = useState({ start: null, over: null });
-  const captureMap = useExtensionStore((s) => s.captureMap);
+  const tradeInputs = useExtensionStore((s) => s.tradeInputs);
 
   const handleReorder = (from, to) => {
     if (drag.start === null && drag.over === null) return;
 
     updateStore((s) => {
-      const arr = s.captureMap;
+      const arr = s.tradeInputs;
       const item = arr.splice(from, 1)[0];
       arr.splice(to, 0, item);
     });
@@ -48,7 +46,7 @@ function InputGridRows({ updateStore }) {
     setDrag({ start: null, over: null });
   };
 
-  return captureMap.map((input, index) => (
+  return tradeInputs.map((input, index) => (
     <div
       key={index}
       className={`input-row ${index === drag.over ? "drag-over" : ""} ${
@@ -62,7 +60,7 @@ function InputGridRows({ updateStore }) {
       <Label text={input.label} />
       <Input
         type={input.type}
-        options={input.options}
+        options={input?.options}
         selector={input.value}
         onChange={(v) =>
           updateStore((s) => handleChange(input.mappedWith, v, s, index))
@@ -72,11 +70,11 @@ function InputGridRows({ updateStore }) {
         <Input
           type="dropdown"
           options={MAPPINGS}
-          selector={(s) => s.captureMap[index].mappedWith}
+          selector={(s) => s.tradeInputs[index].mappedWith}
           onChange={(v) => {
             updateStore((s) => {
-              const obj = s.captureMap[index];
-              Object.assign(obj, { mappedWith: v });
+              const obj = s.tradeInputs[index];
+              Object.assign(obj, { mappedWith: v, type: MAPPING_TYPES[v] });
             });
           }}
         />
@@ -98,12 +96,16 @@ function InputGridRows({ updateStore }) {
                 showInputGenerator: true,
               });
             });
-            const ele = document.getElementById("extension-popup-content");
-            const section = !ele
-              ? document
-                  .getElementById("extension-shadow-root-wrapper")
-                  .shadowRoot.getElementById("extension-popup-content")
-              : ele;
+            const shadowRootWrapper = document.getElementById(
+              "extension-shadow-root-wrapper"
+            );
+
+            const section = shadowRootWrapper
+              ? shadowRootWrapper.shadowRoot.getElementById(
+                  "extension-popup-content"
+                )
+              : document.getElementById("extension-popup-content");
+
             section.scrollTop = 70;
           }}
         />
@@ -113,7 +115,7 @@ function InputGridRows({ updateStore }) {
           type="fill"
           onClick={() =>
             updateStore((s) => {
-              s.captureMap.splice(index, 1);
+              s.tradeInputs.splice(index, 1);
             })
           }
         />

@@ -10,11 +10,23 @@ export const MAPPINGS = [
   "Result",
 ];
 
+export const MAPPING_TYPES = {
+  None: "text",
+  Time: "time",
+  Date: "date",
+  Day: "text",
+  "Time Frame": "text",
+  Symbol: "text",
+  "Risk/Reward": "text",
+  Pnl: "number",
+  Result: "text",
+};
+
 export const FIELD_TYPES = {
+  text: "Text",
   number: "Number",
   time: "Time",
   date: "Date",
-  text: "Text",
   dropdown: "Dropdown",
 };
 

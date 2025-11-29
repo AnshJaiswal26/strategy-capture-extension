@@ -57,6 +57,7 @@
   height: 100%;
   font-size: 14px;
   color: #5b5b5b;
+  min-height: 100px;
 }
 
 .btn-wrapper {
@@ -160,12 +161,19 @@
   cursor: move;
 }
 
+.input-row.drag-over {
+  background-color: #dbeffb !important;
+  transform: scale(0.99);
+  transition: transform 0.2s ease-in-out;
+}
+
 .dropdown-row select {
   width: 125px;
 }
 
-.input-row.drag-over {
-  background-color: #edfaff;
+.highlighted-row {
+  outline: #5b5b5b 1px solid !important;
+  background-color: #dbffe9 !important;
 }
 
 .header-row > * {
@@ -225,7 +233,7 @@
   margin-bottom: 20px;
 }
 
-.all-captures-row-wrapper .tool-header {
+.tool-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -234,14 +242,14 @@
   padding: 5px;
 }
 
-.all-captures-row-wrapper .tool-header div:first-child {
+.tool-header div:first-child {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
 }
 
-.all-captures-row-wrapper .tool-header div:last-child {
+.tool-header div:last-child {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -253,7 +261,7 @@
   box-sizing: border-box;
   background-color: #f8fbff;
   border-top: 1px solid #cfe2ff;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .all-captures-row .column {
@@ -261,6 +269,7 @@
   flex-direction: column;
   font-size: 14px;
   color: #8da9c0;
+  flex: 1;
 }
 
 .all-captures-row .column div {

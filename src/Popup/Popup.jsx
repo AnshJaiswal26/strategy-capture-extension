@@ -40,13 +40,9 @@ export default function Popup() {
 }
 
 function BodyAndFooter({ updateStore }) {
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const isHydrated = useExtensionStore.persist.hasHydrated();
 
-  useEffect(() => {
-    setTimeout(() => setIsDataLoading(false), 1000);
-  }, []);
-
-  if (isDataLoading) {
+  if (!isHydrated) {
     return <Loading size={30} color={"blue"} />;
   }
 

@@ -1,7 +1,7 @@
-import { handleChange } from "../../Popup/components/Body/components/RecentTab/handlers";
+import { handleChange } from "@/Popup/components/Body/components/RecentTab/handlers";
 import { renderComponent } from "./renderComponent";
 import { useExtensionStore } from "@store";
-import buttonCss from "../../PopupToggleButton/PopupToggleButton.css?inline";
+import buttonCss from "@/PopupToggleButton/PopupToggleButton.css?inline";
 
 export const injectScript = (src) => {
   const script = document.createElement("script");
@@ -65,7 +65,7 @@ export function injectButtonInIframe(button) {
 
               updateStore((s) => {
                 data.Pnl = s.riskAmount * data["Risk/Reward"];
-                s.captureMap.forEach(({ mappedWith }, index) => {
+                s.tradeInputs.forEach(({ mappedWith }, index) => {
                   if (data?.[mappedWith])
                     handleChange(mappedWith, data[mappedWith], s, index);
                 });

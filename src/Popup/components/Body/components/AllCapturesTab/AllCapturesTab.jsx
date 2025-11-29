@@ -5,34 +5,34 @@ import { Download } from "lucide-react";
 import { handleDownload } from "./handlers";
 
 export default function AllCapturesTab({ updateStore }) {
-  const allCaptures = useExtensionStore((s) => s.allCaptures);
+  const tradeRecords = useExtensionStore((s) => s.tradeRecords);
 
   return (
     <>
       <div className="all-captures-toolbar">
         <div className="entries">
           <span>Total Captures </span>
-          <span>{allCaptures.length}</span>
+          <span>{tradeRecords.length}</span>
         </div>
 
-        {allCaptures.length !== 0 && (
+        {tradeRecords.length !== 0 && (
           <Button
             text={<Download size={15} />}
             type={"hollow"}
             size="very-small"
             title={"Download All"}
-            onClick={() => handleDownload(allCaptures)}
+            onClick={() => handleDownload(tradeRecords)}
           />
         )}
       </div>
 
       <div className="all-captures-content-wrapper">
-        {allCaptures.length === 0 ? (
+        {tradeRecords.length === 0 ? (
           <div className="no-input-found">
             <span>No Captures Found</span>
           </div>
         ) : (
-          allCaptures.map((capture, index) => (
+          tradeRecords.map((capture, index) => (
             <div className="all-captures-row-wrapper" key={index}>
               <Header
                 capture={capture}

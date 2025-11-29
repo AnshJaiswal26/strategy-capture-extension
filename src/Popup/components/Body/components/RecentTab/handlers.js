@@ -17,13 +17,16 @@ export const handleChange = (field, value, s, index = undefined) => {
       s.riskPercent = format((currentValue / capital) * 100);
       s.riskAmount = value;
 
-      const riskReward = s.captureMap.find(
+      const riskReward = s.tradeInputs.find(
         (r) => r.mappedWith === "Risk/Reward"
-      ).value;
+      )?.value;
 
-      s.captureMap.find((r) => r.mappedWith === "Pnl").value = format(
-        Number(riskReward.substring(2)) * value
-      );
+      if (riskReward) {
+        s.tradeInputs.forEach((r) => {
+          if (r.mappedWith === "Pnl")
+            r.value = format(Number(riskReward.substring(2)) * value);
+        });
+      }
     },
 
     riskPercent: (s) => {
@@ -31,24 +34,27 @@ export const handleChange = (field, value, s, index = undefined) => {
       s.riskAmount = amount;
       s.riskPercent = value;
 
-      const riskReward = s.captureMap.find(
+      const riskReward = s.tradeInputs.find(
         (r) => r.mappedWith === "Risk/Reward"
-      ).value;
+      )?.value;
 
-      s.captureMap.find((r) => r.mappedWith === "Pnl").value = format(
-        Number(riskReward.substring(2)) * amount
-      );
+      if (riskReward) {
+        s.tradeInputs.forEach((r) => {
+          if (r.mappedWith === "Pnl")
+            r.value = format(Number(riskReward.substring(2)) * amount);
+        });
+      }
     },
 
     "Risk/Reward": (s) => {
-      s.captureMap.forEach((r) => {
+      s.tradeInputs.forEach((r) => {
         if (r.mappedWith === "Risk/Reward") r.value = `1:${currentValue}`;
         if (r.mappedWith === "Pnl") r.value = format(riskAmount * currentValue);
       });
     },
 
     Pnl: (s) => {
-      s.captureMap.forEach((r) => {
+      s.tradeInputs.forEach((r) => {
         if (r.mappedWith === "Risk/Reward")
           r.value = `1:${format(currentValue / riskAmount)}`;
         if (r.mappedWith === "Pnl") r.value = value;
@@ -56,8 +62,9 @@ export const handleChange = (field, value, s, index = undefined) => {
     },
 
     default: (s) => {
-      if (index !== undefined) s.captureMap[index].value = value;
-      else s[field] = value;
+      if (index !== undefined) {
+        s.tradeInputs[index].value = value;
+      } else s[field] = value;
     },
   };
 

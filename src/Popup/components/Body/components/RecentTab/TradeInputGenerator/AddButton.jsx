@@ -1,5 +1,6 @@
+import { highlightRow } from "@/utils";
 import { Button } from "@components";
-import { MAPPINGS } from "@constants";
+import { MAPPING_TYPES, MAPPINGS } from "@constants";
 import { useExtensionStore } from "@store";
 import { X } from "lucide-react";
 
@@ -37,38 +38,35 @@ export default function AddButton({ updateStore }) {
 
   const handleClick = (s) => {
     const label = s.inputLabel;
-    const type = s.inputType.toLowerCase();
     const mappedWith = MAPPINGS.includes(label) ? label : "None";
+    const type =
+      mappedWith === "None"
+        ? s.inputType.toLowerCase()
+        : MAPPING_TYPES[mappedWith];
+
+    const updatingIndex = s.updatingIndex;
 
     const payload = {
       label,
       type,
-      ...(type === "dropdown" && { options: s.inputOptions }),
       ...(updatingIndex === null && {
-        value: ["date", "time", "day"].includes(type) ? timeAndDate(type) : 0,
+        value: ["date", "time"].includes(type) ? timeAndDate(type) : 0,
         mappedWith,
+      }),
+      ...(type === "dropdown" && {
+        options: s.inputOptions,
+        value: s.inputOptions[0],
       }),
     };
 
     if (updatingIndex !== null) {
-      Object.assign(s.captureMap[updatingIndex], payload);
+      Object.assign(s.tradeInputs[updatingIndex], payload);
       resetInputs(s);
     } else {
-      s.captureMap.push(payload);
-      setTimeout(() => {
-        const ele = document.getElementById("extension-popup-content");
-        const section = !ele
-          ? document
-              .getElementById("extension-shadow-root-wrapper")
-              .shadowRoot.getElementById("extension-popup-content")
-          : ele;
-        section.scrollTop = section.scrollHeight + 100;
-        section.lastChild.lastChild.classList.add("drag-over");
-        setTimeout(() => {
-          section.lastChild.lastChild.classList.remove("drag-over");
-        }, 500);
-      }, 100);
+      s.tradeInputs.push(payload);
     }
+
+    highlightRow(updatingIndex !== null ? updatingIndex + 1 : null);
   };
 
   return (

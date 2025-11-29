@@ -1,17 +1,13 @@
 import { useState } from "react";
 import { Button } from "@components";
-import { copyToClipBoard } from "./handlers";
+import { handleCopyToClipBoard } from "./handlers";
 import { Copy, CopyCheckIcon, Pencil, Trash2 } from "lucide-react";
 
 export default function Header({ capture, index, updateStore }) {
   return (
     <div className="tool-header">
       <div>
-        <CopyButton
-          text={capture
-            .map(({ label, value }) => `${label}: ${value}`)
-            .join("\n")}
-        />
+        <CopyButton srcData={capture} />
         <div className="entries">
           <span>Columns </span>
           <span>{capture.length}</span>
@@ -26,7 +22,7 @@ export default function Header({ capture, index, updateStore }) {
           onClick={() =>
             updateStore((s) => {
               s.activeTabIndex = 0;
-              s.captureMap = s.allCaptures[index];
+              s.tradeInputs = s.tradeRecords[index];
               s.editingIndex = index;
             })
           }
@@ -36,7 +32,7 @@ export default function Header({ capture, index, updateStore }) {
           size="very-small"
           onClick={() =>
             updateStore((s) => {
-              s.allCaptures.splice(index, 1);
+              s.tradeRecords.splice(index, 1);
             })
           }
         />
@@ -45,7 +41,7 @@ export default function Header({ capture, index, updateStore }) {
   );
 }
 
-function CopyButton({ text }) {
+function CopyButton({ srcData }) {
   const [isCopied, setIsCopied] = useState(false);
 
   return (
@@ -53,7 +49,13 @@ function CopyButton({ text }) {
       text={!isCopied ? <Copy size={15} /> : <CopyCheckIcon size={15} />}
       type={isCopied ? "fill" : "hollow"}
       size="very-small"
-      onClick={() => copyToClipBoard(text, isCopied, setIsCopied)}
+      disable={isCopied}
+      onClick={() =>
+        handleCopyToClipBoard(
+          srcData.map(({ label, value }) => `${label}: ${value}`).join("\n"),
+          setIsCopied
+        )
+      }
     />
   );
 }

@@ -76,12 +76,12 @@ button {
   justify-content: flex-end;
 }
 
-.backtesting-popup-footer-btn-wrapper {
+.footer-btn-wrapper {
   display: flex;
   gap: 15px;
 }
 
-.backtesting-popup-footer-btn-wrapper .footer-right-side-btn {
+.footer-btn-wrapper .footer-right-side-btn {
   display: flex;
   gap: 15px;
 }

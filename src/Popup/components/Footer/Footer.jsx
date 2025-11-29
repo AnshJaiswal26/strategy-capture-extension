@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useExtensionStore } from "@store";
 import { Button } from "@components";
+import { highlightRow } from "@utils";
 
 export default function Footer({ updateStore }) {
   const activeTabIndex = useExtensionStore((s) => s.activeTabIndex);
@@ -9,13 +10,11 @@ export default function Footer({ updateStore }) {
   return (
     <div className="backtesting-popup-footer-wrapper">
       <div className="backtesting-popup-footer">
-        <div className={`backtesting-popup-footer-btn-wrapper space`}>
-          {activeTabIndex === 0 ? (
-            <Tab1Buttons updateStore={updateStore} isEditing={isEditing} />
-          ) : (
-            <Tab2Buttons />
-          )}
-        </div>
+        {activeTabIndex === 0 ? (
+          <Tab1Buttons updateStore={updateStore} isEditing={isEditing} />
+        ) : (
+          <Tab2Buttons />
+        )}
       </div>
     </div>
   );
@@ -23,8 +22,8 @@ export default function Footer({ updateStore }) {
 
 function Tab1Buttons({ updateStore, isEditing }) {
   return (
-    <>
-      <Button
+    <div className="footer-btn-wrapper">
+      {/* <Button
         text="Logout"
         type="hollow"
         onClick={() =>
@@ -33,35 +32,38 @@ function Tab1Buttons({ updateStore, isEditing }) {
           })
         }
       />
-      <div className="footer-right-side-btn">
-        {isEditing && (
-          <Button
-            text="Cancel"
-            type="hollow"
-            onClick={() =>
-              updateStore((s) => {
-                s.editingIndex = null;
-              })
-            }
-          />
-        )}
+      <div className="footer-right-side-btn"> */}
+      {isEditing && (
         <Button
-          text={isEditing ? "Update" : "Add"}
-          type="fill"
+          text="Cancel"
+          type="hollow"
           onClick={() =>
             updateStore((s) => {
-              const arr = s.allCaptures;
-              if (s.editingIndex !== null && arr?.[s.editingIndex]) {
-                Object.assign(arr[s.editingIndex], s.captureMap);
-              } else arr.push(s.captureMap);
-
               s.editingIndex = null;
-              s.activeTabIndex = 1;
             })
           }
         />
-      </div>
-    </>
+      )}
+      <Button
+        text={isEditing ? "Update" : "Add"}
+        type="fill"
+        onClick={() =>
+          updateStore((s) => {
+            const arr = s.tradeRecords;
+            const index = s.editingIndex;
+            if (index !== null && arr?.[index]) {
+              Object.assign(arr[index], s.tradeInputs);
+            } else arr.push(s.tradeInputs);
+
+            highlightRow(index);
+
+            s.editingIndex = null;
+            s.activeTabIndex = 1;
+          })
+        }
+      />
+      {/* </div> */}
+    </div>
   );
 }
 
@@ -69,15 +71,15 @@ function Tab2Buttons() {
   const [autoSave, setAutoSave] = useState(false);
 
   return (
-    <>
-      <Button
+    <div className="footer-btn-wrapper space">
+      {/* <Button
         type="toggle"
         text={"Auto-Save"}
         toggle={autoSave}
         onClick={() => setAutoSave((p) => !p)}
-      />
-      <Button text="Save" type="hollow" onClick={() => null} />
-    </>
+      /> */}
+      <Button text="Export" type="hollow" onClick={() => null} />
+    </div>
   );
 }
 
