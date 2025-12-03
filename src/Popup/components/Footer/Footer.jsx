@@ -47,19 +47,10 @@ function Tab1Buttons({ updateStore, isEditing }) {
       <Button
         text={isEditing ? "Update" : "Add"}
         type="fill"
-        onClick={() =>
-          updateStore((s) => {
-            const arr = s.tradeRecords;
-            const index = s.editingIndex;
-            if (index !== null && arr?.[index]) {
-              Object.assign(arr[index], s.tradeInputs);
-            } else arr.push(s.tradeInputs);
-
-            highlightRow(index);
-
-            s.editingIndex = null;
-            s.activeTabIndex = 1;
-          })
+        onClick={
+          isEditing
+            ? useExtensionStore.getState().updateTradeRecord
+            : useExtensionStore.getState().addTradeRecord
         }
       />
       {/* </div> */}

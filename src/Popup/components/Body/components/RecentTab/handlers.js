@@ -17,12 +17,12 @@ export const handleChange = (field, value, s, index = undefined) => {
       s.riskPercent = format((currentValue / capital) * 100);
       s.riskAmount = value;
 
-      const riskReward = s.tradeInputs.find(
+      const riskReward = s.tradeInputs.fields.find(
         (r) => r.mappedWith === "Risk/Reward"
       )?.value;
 
       if (riskReward) {
-        s.tradeInputs.forEach((r) => {
+        s.tradeInputs.fields.forEach((r) => {
           if (r.mappedWith === "Pnl")
             r.value = format(Number(riskReward.substring(2)) * value);
         });
@@ -34,12 +34,12 @@ export const handleChange = (field, value, s, index = undefined) => {
       s.riskAmount = amount;
       s.riskPercent = value;
 
-      const riskReward = s.tradeInputs.find(
+      const riskReward = s.tradeInputs.fields.find(
         (r) => r.mappedWith === "Risk/Reward"
       )?.value;
 
       if (riskReward) {
-        s.tradeInputs.forEach((r) => {
+        s.tradeInputs.fields.forEach((r) => {
           if (r.mappedWith === "Pnl")
             r.value = format(Number(riskReward.substring(2)) * amount);
         });
@@ -47,14 +47,14 @@ export const handleChange = (field, value, s, index = undefined) => {
     },
 
     "Risk/Reward": (s) => {
-      s.tradeInputs.forEach((r) => {
+      s.tradeInputs.fields.forEach((r) => {
         if (r.mappedWith === "Risk/Reward") r.value = `1:${currentValue}`;
         if (r.mappedWith === "Pnl") r.value = format(riskAmount * currentValue);
       });
     },
 
     Pnl: (s) => {
-      s.tradeInputs.forEach((r) => {
+      s.tradeInputs.fields.forEach((r) => {
         if (r.mappedWith === "Risk/Reward")
           r.value = `1:${format(currentValue / riskAmount)}`;
         if (r.mappedWith === "Pnl") r.value = value;
@@ -63,7 +63,7 @@ export const handleChange = (field, value, s, index = undefined) => {
 
     default: (s) => {
       if (index !== undefined) {
-        s.tradeInputs[index].value = value;
+        s.tradeInputs.fields[index].value = value;
       } else s[field] = value;
     },
   };

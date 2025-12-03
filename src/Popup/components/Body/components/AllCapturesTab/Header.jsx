@@ -2,23 +2,31 @@ import { useState } from "react";
 import { Button } from "@components";
 import { handleCopyToClipBoard } from "./handlers";
 import { Copy, CopyCheckIcon, Pencil, Trash2 } from "lucide-react";
+import { useExtensionStore } from "@/stores/useExtensionStore";
 
-export default function Header({ capture, index, updateStore }) {
+export default function Header({ capture, index, timeStamp, updateStore }) {
+  const date = new Date(timeStamp);
+
   return (
     <div className="tool-header">
       <div>
         <CopyButton srcData={capture} />
-        <div className="entries">
+        <div className="timestamp">
           <span>Columns </span>
           <span>{capture.length}</span>
         </div>
       </div>
 
       <div>
+        <div className="timestamp">
+          <span>{date.toLocaleDateString()}</span>
+          <span>{date.toLocaleTimeString()}</span>
+        </div>
         <Button
           text={<Pencil size={15} />}
           type="hollow"
           size="very-small"
+          title={"Edit"}
           onClick={() =>
             updateStore((s) => {
               s.activeTabIndex = 0;
@@ -30,11 +38,10 @@ export default function Header({ capture, index, updateStore }) {
         <Button
           text={<Trash2 size={15} />}
           size="very-small"
-          onClick={() =>
-            updateStore((s) => {
-              s.tradeRecords.splice(index, 1);
-            })
-          }
+          title={"Delete"}
+          onClick={async () => {
+            await useExtensionStore.getState().deleteTradeRecord(index);
+          }}
         />
       </div>
     </div>
@@ -50,6 +57,7 @@ function CopyButton({ srcData }) {
       type={isCopied ? "fill" : "hollow"}
       size="very-small"
       disable={isCopied}
+      title={"Copy"}
       onClick={() =>
         handleCopyToClipBoard(
           srcData.map(({ label, value }) => `${label}: ${value}`).join("\n"),

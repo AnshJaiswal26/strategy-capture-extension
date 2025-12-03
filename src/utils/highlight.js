@@ -1,4 +1,4 @@
-export const highlightRow = (index) => {
+export const highlightRow = (index = null) => {
   requestAnimationFrame(() => {
     const shadowRootWrapper = document.getElementById(
       "extension-shadow-root-wrapper"

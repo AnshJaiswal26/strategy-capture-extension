@@ -6,7 +6,9 @@ import { handleChange } from "./handlers";
 import { useState } from "react";
 
 export default function TradeInputRows({ updateStore }) {
-  const isLengthZero = useExtensionStore((s) => s.tradeInputs.length === 0);
+  const isLengthZero = useExtensionStore(
+    (s) => s.tradeInputs.fields.length === 0
+  );
 
   if (isLengthZero) {
     return (
@@ -38,7 +40,7 @@ function TradeInputsGrid({ updateStore }) {
     if (drag.start === null && drag.over === null) return;
 
     updateStore((s) => {
-      const arr = s.tradeInputs;
+      const arr = s.tradeInputs.fields;
       const item = arr.splice(from, 1)[0];
       arr.splice(to, 0, item);
     });
@@ -46,7 +48,7 @@ function TradeInputsGrid({ updateStore }) {
     setDrag({ start: null, over: null });
   };
 
-  return tradeInputs.map((input, index) => (
+  return tradeInputs.fields.map((input, index) => (
     <div
       key={index}
       className={`input-row ${index === drag.over ? "drag-over" : ""} ${
@@ -70,10 +72,10 @@ function TradeInputsGrid({ updateStore }) {
         <Input
           type="dropdown"
           options={MAPPINGS}
-          selector={(s) => s.tradeInputs[index].mappedWith}
+          selector={(s) => s.tradeInputs.fields[index].mappedWith}
           onChange={(v) => {
             updateStore((s) => {
-              const obj = s.tradeInputs[index];
+              const obj = s.tradeInputs.fields[index];
               Object.assign(obj, { mappedWith: v, type: MAPPING_TYPES[v] });
             });
           }}
@@ -115,7 +117,7 @@ function TradeInputsGrid({ updateStore }) {
           type="fill"
           onClick={() =>
             updateStore((s) => {
-              s.tradeInputs.splice(index, 1);
+              s.tradeInputs.fields.splice(index, 1);
             })
           }
         />

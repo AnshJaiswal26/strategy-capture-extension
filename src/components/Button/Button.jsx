@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import "./Button.css";
 export default function Button({
   text,
@@ -8,6 +9,7 @@ export default function Button({
   title,
   toggle = false,
   submit = false,
+  loading = false,
 }) {
   return (
     <div className={`btn-wrapper`}>
@@ -15,13 +17,18 @@ export default function Button({
       <button
         type={submit ? "submit" : ""}
         className={`${type}-btn ${toggle ? "enabled" : ""} ${size} ${
-          disable ? "btn-disable" : ""
+          disable || loading ? "btn-disable" : ""
         }`}
         onClick={onClick}
         title={title || ""}
-        disabled={disable}
+        disabled={disable || loading}
       >
-        {type !== "toggle" ? text : <div className="circle"></div>}
+        {loading && (
+          <div className="loader">
+            <Loader2 size={15} strokeWidth={3} />
+          </div>
+        )}
+        <div>{type !== "toggle" ? text : <div className="circle"></div>}</div>
       </button>
     </div>
   );

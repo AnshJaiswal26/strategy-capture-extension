@@ -60,10 +60,10 @@ export default function AddButton({ updateStore }) {
     };
 
     if (updatingIndex !== null) {
-      Object.assign(s.tradeInputs[updatingIndex], payload);
+      Object.assign(s.tradeInputs.fields[updatingIndex], payload);
       resetInputs(s);
     } else {
-      s.tradeInputs.push(payload);
+      s.tradeInputs.fields.push(payload);
     }
 
     highlightRow(updatingIndex !== null ? updatingIndex + 1 : null);

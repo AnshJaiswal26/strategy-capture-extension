@@ -1,6 +1,8 @@
 .btn-wrapper {
   display: flex;
-  /* margin: 10px; */
+}
+.btn-wrapper .loader svg {
+  margin-bottom: -2px;
 }
 
 .btn-wrapper.x-center {
@@ -79,6 +81,10 @@
   border: 1px solid #ccc;
   color: #818181;
   cursor: default;
+}
+
+.btn-disable svg {
+  color: #818181 !important;
 }
 
 .toggle-btn {

@@ -65,7 +65,7 @@ export function injectButtonInIframe(button) {
 
               updateStore((s) => {
                 data.Pnl = s.riskAmount * data["Risk/Reward"];
-                s.tradeInputs.forEach(({ mappedWith }, index) => {
+                s.tradeInputs.fields.forEach(({ mappedWith }, index) => {
                   if (data?.[mappedWith])
                     handleChange(mappedWith, data[mappedWith], s, index);
                 });

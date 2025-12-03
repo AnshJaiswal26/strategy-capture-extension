@@ -29,7 +29,7 @@ export default function Popup() {
       ) : (
         <>
           <TabSelector
-            tabs={["Recent", "All Captures"]}
+            tabs={["Recent", "All Captures", "Sheets"]}
             updateStore={updateStore}
           />
           <BodyAndFooter updateStore={updateStore} />
@@ -41,8 +41,13 @@ export default function Popup() {
 
 function BodyAndFooter({ updateStore }) {
   const isHydrated = useExtensionStore.persist.hasHydrated();
+  const loading = useExtensionStore((s) => s.loading);
 
-  if (!isHydrated) {
+  useEffect(() => {
+    useExtensionStore.getState().loadTradeRecords();
+  }, []);
+
+  if (!isHydrated || loading) {
     return <Loading size={30} color={"blue"} />;
   }
 
