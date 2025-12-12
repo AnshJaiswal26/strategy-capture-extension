@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useExtensionStore } from "@store";
 import { Button } from "@components";
-import { highlightRow } from "@utils";
 
 export default function Footer({ updateStore }) {
   const activeTabIndex = useExtensionStore((s) => s.activeTabIndex);
@@ -12,8 +11,10 @@ export default function Footer({ updateStore }) {
       <div className="backtesting-popup-footer">
         {activeTabIndex === 0 ? (
           <Tab1Buttons updateStore={updateStore} isEditing={isEditing} />
-        ) : (
+        ) : activeTabIndex === 1 ? (
           <Tab2Buttons />
+        ) : (
+          <Tab3Buttons />
         )}
       </div>
     </div>
@@ -21,8 +22,10 @@ export default function Footer({ updateStore }) {
 }
 
 function Tab1Buttons({ updateStore, isEditing }) {
+  const [loading, setLoading] = useState(false);
+
   return (
-    <div className="footer-btn-wrapper">
+    <div className="footer-btn-wrapper space">
       {/* <Button
         text="Logout"
         type="hollow"
@@ -31,45 +34,84 @@ function Tab1Buttons({ updateStore, isEditing }) {
             s.userLoggedIn = false;
           })
         }
+      /> */}
+      <Button
+        text="Export to sheets"
+        type="hollow"
+        onClick={async () => {
+          setLoading(true);
+          await useExtensionStore.getState().appendDataToSheet();
+          setLoading(false);
+        }}
+        loading={loading}
       />
-      <div className="footer-right-side-btn"> */}
-      {isEditing && (
+      <div className="footer-right-side-btn">
+        {isEditing && (
+          <Button
+            text="Cancel"
+            type="hollow"
+            onClick={() =>
+              updateStore((s) => {
+                s.editingIndex = null;
+              })
+            }
+          />
+        )}
         <Button
-          text="Cancel"
-          type="hollow"
-          onClick={() =>
-            updateStore((s) => {
-              s.editingIndex = null;
-            })
+          text={isEditing ? "Update" : "Add"}
+          type="fill"
+          onClick={
+            isEditing
+              ? useExtensionStore.getState().updateTradeRecord
+              : useExtensionStore.getState().addTradeRecord
           }
         />
-      )}
-      <Button
-        text={isEditing ? "Update" : "Add"}
-        type="fill"
-        onClick={
-          isEditing
-            ? useExtensionStore.getState().updateTradeRecord
-            : useExtensionStore.getState().addTradeRecord
-        }
-      />
-      {/* </div> */}
+      </div>
     </div>
   );
 }
 
 function Tab2Buttons() {
-  const [autoSave, setAutoSave] = useState(false);
+  const tradeRecords = useExtensionStore((s) => s.tradeRecords);
 
   return (
-    <div className="footer-btn-wrapper space">
-      {/* <Button
-        type="toggle"
-        text={"Auto-Save"}
-        toggle={autoSave}
-        onClick={() => setAutoSave((p) => !p)}
-      /> */}
-      <Button text="Export" type="hollow" onClick={() => null} />
+    <div className="footer-btn-wrapper">
+      <Button
+        text="Download"
+        type="hollow"
+        disable={tradeRecords.length === 0}
+        onClick={() => {
+          const csvContent = tradeRecords
+            .map((row) => row.fields.map(({ value }) => value).join(","))
+            .join("\n");
+          const blob = new Blob([csvContent], {
+            type: "text/csv;chartset=utf-8;",
+          });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "captures.csv";
+          link.click();
+        }}
+      />
+    </div>
+  );
+}
+
+function Tab3Buttons() {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <div className="footer-btn-wrapper">
+      <Button
+        text="Export"
+        type="hollow"
+        onClick={async () => {
+          setLoading(true);
+          await useExtensionStore.getState().appendDataToSheet();
+          setLoading(false);
+        }}
+        loading={loading}
+      />
     </div>
   );
 }

@@ -1,8 +1,7 @@
 import { useExtensionStore } from "@store";
 import Header from "./Header";
 import { Button } from "@components";
-import { Download, RefreshCwIcon } from "lucide-react";
-import { handleDownload } from "./handlers";
+import { RefreshCwIcon } from "lucide-react";
 
 export default function AllCapturesTab({ updateStore, setLoading }) {
   const tradeRecords = useExtensionStore((s) => s.tradeRecords);
@@ -22,16 +21,6 @@ export default function AllCapturesTab({ updateStore, setLoading }) {
             title={"Refresh"}
             onClick={useExtensionStore.getState().loadTradeRecords}
           />
-
-          {tradeRecords.length !== 0 && (
-            <Button
-              text={<Download size={15} />}
-              type={"hollow"}
-              size="very-small"
-              title={"Download"}
-              onClick={() => handleDownload(tradeRecords)}
-            />
-          )}
         </div>
       </div>
 

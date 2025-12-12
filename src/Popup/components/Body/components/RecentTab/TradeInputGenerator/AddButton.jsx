@@ -1,4 +1,4 @@
-import { highlightRow } from "@/utils";
+import { highlightRow } from "@utils";
 import { Button } from "@components";
 import { MAPPING_TYPES, MAPPINGS } from "@constants";
 import { useExtensionStore } from "@store";
@@ -64,6 +64,8 @@ export default function AddButton({ updateStore }) {
       resetInputs(s);
     } else {
       s.tradeInputs.fields.push(payload);
+      s.uniqueLabels[payload.label].count =
+        (s.uniqueLabels?.[payload.label]?.count ?? 0) + 1;
     }
 
     highlightRow(updatingIndex !== null ? updatingIndex + 1 : null);

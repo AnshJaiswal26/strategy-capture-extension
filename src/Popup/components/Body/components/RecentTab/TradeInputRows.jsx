@@ -1,8 +1,8 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { Button, Input, Label } from "@components";
-import { FIELD_TYPES, MAPPING_TYPES, MAPPINGS } from "@constants";
+import { ColumnPicker, Input, Label, MoreButton } from "@components";
+import { MAPPING_TYPES, MAPPINGS } from "@constants";
 import { useExtensionStore } from "@store";
-import { handleChange } from "./handlers";
+import { handleChange, handleDelete, handleEdit } from "./handlers";
 import { useState } from "react";
 
 export default function TradeInputRows({ updateStore }) {
@@ -24,7 +24,7 @@ export default function TradeInputRows({ updateStore }) {
         <Label text="Labels" type="header" />
         <Label text="Inputs" type="header" />
         <Label text="Mappings" type="header" />
-        <div className="filler" />
+        <Label text="Column" type="header" />
       </div>
 
       <TradeInputsGrid updateStore={updateStore} />
@@ -35,6 +35,7 @@ export default function TradeInputRows({ updateStore }) {
 function TradeInputsGrid({ updateStore }) {
   const [drag, setDrag] = useState({ start: null, over: null });
   const tradeInputs = useExtensionStore((s) => s.tradeInputs);
+  const selectedSheet = useExtensionStore((s) => s.selectedSheet);
 
   const handleReorder = (from, to) => {
     if (drag.start === null && drag.over === null) return;
@@ -83,45 +84,27 @@ function TradeInputsGrid({ updateStore }) {
       ) : (
         <div className="filler" />
       )}
-      <div className="edit-trash-btn-wrapper">
-        <Button
-          text={<Pencil size={16} />}
-          size="small"
-          type="hollow"
-          onClick={() => {
-            updateStore((s) => {
-              Object.assign(s, {
-                ...(input?.options && { inputOptions: input.options }),
-                inputLabel: input.label,
-                inputType: FIELD_TYPES[input.type],
-                updatingIndex: index,
-                showInputGenerator: true,
-              });
-            });
-            const shadowRootWrapper = document.getElementById(
-              "extension-shadow-root-wrapper"
-            );
+      <ColumnPicker
+        disabled={selectedSheet === ""}
+        selector={(s) => s.tradeInputs.fields[index].mappedColumn}
+        onChange={(v) =>
+          updateStore((s) => {
+            s.tradeInputs.fields[index].mappedColumn = v;
+          })
+        }
+      />
 
-            const section = shadowRootWrapper
-              ? shadowRootWrapper.shadowRoot.getElementById(
-                  "extension-popup-content"
-                )
-              : document.getElementById("extension-popup-content");
+      <MoreButton>
+        <MoreButton.Option
+          onClick={() => handleEdit(updateStore, input, index)}
+        >
+          <Pencil size={15} color="gray" /> <span>Edit</span>
+        </MoreButton.Option>
 
-            section.scrollTop = 70;
-          }}
-        />
-        <Button
-          text={<Trash2 size={16} />}
-          size="small"
-          type="fill"
-          onClick={() =>
-            updateStore((s) => {
-              s.tradeInputs.fields.splice(index, 1);
-            })
-          }
-        />
-      </div>
+        <MoreButton.Option onClick={() => handleDelete(updateStore, index)}>
+          <Trash2 size={15} color="palevioletred" /> <span>Delete</span>
+        </MoreButton.Option>
+      </MoreButton>
     </div>
   ));
 }

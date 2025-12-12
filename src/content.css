@@ -5,6 +5,7 @@
 @import "./components/TopDownSlider/TopDownSlider.css";
 @import "./Popup/components/LoginForm/LoginForm.css";
 @import "./components/TabSelector/TabSelector.css";
+@import "./components/Toast/Toast.css";
 
 @import "./Popup/components/Body/Body.css";
 @import "./Popup/Popup.css";

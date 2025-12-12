@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@components";
-import { handleCopyToClipBoard } from "./handlers";
 import { Copy, CopyCheckIcon, Pencil, Trash2 } from "lucide-react";
 import { useExtensionStore } from "@/stores/useExtensionStore";
 
@@ -19,7 +18,7 @@ export default function Header({ capture, index, timeStamp, updateStore }) {
 
       <div>
         <div className="timestamp">
-          <span>{date.toLocaleDateString()}</span>
+          <span>{date.toDateString()}</span>
           <span>{date.toLocaleTimeString()}</span>
         </div>
         <Button
@@ -50,6 +49,12 @@ export default function Header({ capture, index, timeStamp, updateStore }) {
 
 function CopyButton({ srcData }) {
   const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopyToClipBoard = async (text) => {
+    setIsCopied(true);
+    await navigator.clipboard.writeText(text);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   return (
     <Button

@@ -6,7 +6,7 @@ button {
 
 .backtesting-popup {
   position: fixed;
-  width: 500px;
+  width: 520px;
   background: white;
   border-radius: 6px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -86,7 +86,7 @@ button {
   gap: 15px;
 }
 
-.backtesting-popup-footer-btn-wrapper.space {
+.footer-btn-wrapper.space {
   flex: 1;
   justify-content: space-between;
 }

@@ -43,9 +43,13 @@ export const useExtensionStore = create(
         editingIndex: null,
         allCapturesUpdatingIdx: 0,
         isEdit: false,
-
-        isAutoSaveEnabled: false,
-        isSaved: false,
+        uniqueLabels: {
+          "Demo Sheet": {
+            Date: { type: "date", count: 1, mappedColumn: "A" },
+            Day: { type: "text", count: 1, mappedColumn: "B" },
+            Avg: { type: "text", count: 1, mappedColumn: "B" },
+          },
+        },
 
         // login (temporary)
         userLoggedIn: true,
@@ -55,7 +59,9 @@ export const useExtensionStore = create(
         sheetId: "",
         sheetNames: [],
         selectedSheet: "",
-        showMsg: false,
+        sheetColumnMap: {},
+
+        toasts: [],
 
         // ---------------------------
         // LOCAL UI STATE HANDLER
@@ -65,6 +71,26 @@ export const useExtensionStore = create(
             cb(s);
           }),
 
+        showToast: (type = "info", message, duration = 3000) =>
+          set((state) => {
+            const id = Date.now() + Math.random();
+            const newToast = { id, type, message, duration };
+
+            // auto-remove
+            setTimeout(() => {
+              set((s) => ({
+                toasts: s.toasts.filter((t) => t.id !== id),
+              }));
+            }, duration);
+
+            return { toasts: [newToast, ...state.toasts] };
+          }),
+
+        removeToast: (id) =>
+          set((state) => ({
+            toasts: state.toasts.filter((t) => t.id !== id),
+          })),
+
         // API SERVICES
         loadTradeRecords: async () => {
           set((s) => {
@@ -72,11 +98,10 @@ export const useExtensionStore = create(
           });
 
           const res = await fetch("http://localhost:8080/api/extension");
-
-          const data = await res.json();
+          const parsedRes = await res.json();
 
           set((s) => {
-            s.tradeRecords = data;
+            s.tradeRecords = parsedRes.data;
             s.loading = false;
           });
         },
@@ -95,11 +120,11 @@ export const useExtensionStore = create(
             body: JSON.stringify(state.tradeInputs.fields),
           });
 
-          const data = await res.json();
+          const parsedRes = await res.json();
 
-          if (res.status === 200) {
+          if (parsedRes.success) {
             set((s) => {
-              s.tradeRecords.push(data);
+              s.tradeRecords.push(parsedRes.data);
 
               s.editingIndex = null;
               s.loading = false;
@@ -107,6 +132,10 @@ export const useExtensionStore = create(
 
             highlightRow();
           }
+          state.showToast(
+            parsedRes.success ? "success" : "error",
+            parsedRes.message
+          );
         },
 
         updateTradeRecord: async () => {
@@ -114,7 +143,7 @@ export const useExtensionStore = create(
             s.loading = true;
           });
 
-          const { tradeRecords, editingIndex, tradeInputs } = get();
+          const { tradeRecords, editingIndex, tradeInputs, showToast } = get();
           const tradeId = tradeRecords[editingIndex].tradeId;
 
           const res = await fetch(
@@ -126,12 +155,11 @@ export const useExtensionStore = create(
             }
           );
 
-          let data = await res.json();
-          console.log(data);
+          const parsedRes = await res.json();
 
-          if (res.status === 200) {
+          if (parsedRes.success) {
             set((s) => {
-              s.tradeRecords[editingIndex] = data;
+              s.tradeRecords[editingIndex] = parsedRes.data;
 
               s.editingIndex = null;
               s.activeTabIndex = 1;
@@ -140,6 +168,7 @@ export const useExtensionStore = create(
 
             highlightRow(editingIndex);
           }
+          showToast(parsedRes.success ? "success" : "error", parsedRes.message);
         },
 
         deleteTradeRecord: async (index) => {
@@ -147,7 +176,8 @@ export const useExtensionStore = create(
             s.loading = true;
           });
 
-          const tradeId = get().tradeRecords[index].tradeId;
+          const state = get();
+          const tradeId = state.tradeRecords[index].tradeId;
 
           const res = await fetch(
             `http://localhost:8080/api/extension/${tradeId}`,
@@ -155,13 +185,19 @@ export const useExtensionStore = create(
               method: "DELETE",
             }
           );
+          const parsedRes = await res.json();
 
-          if (res.status === 204) {
+          if (parsedRes.success) {
             set((s) => {
               s.tradeRecords.splice(index, 1);
               s.loading = false;
             });
           }
+
+          state.showToast(
+            parsedRes.success ? "success" : "error",
+            parsedRes.message
+          );
         },
 
         // sheets  api
@@ -170,37 +206,71 @@ export const useExtensionStore = create(
             s.sheetStatus = "CONNECTING..";
           });
 
-          const sheetId = get().sheetId;
+          const state = get();
+          const sheetId = state.sheetId;
 
           const res = await fetch(
-            `http://localhost:8080/api/sheets?sheetId=${sheetId}`
+            `http://localhost:8080/api/sheets/${sheetId}`
+          );
+          const parsedRes = await res.json();
+
+          console.log(parsedRes);
+
+          if (parsedRes.success) {
+            set((s) => {
+              s.sheetNames = parsedRes.data;
+            });
+          }
+          set((s) => {
+            s.sheetStatus = parsedRes.success ? "CONNECTED" : "DISCONNECTED";
+          });
+          state.showToast(
+            parsedRes.success ? "success" : "error",
+            parsedRes.message
+          );
+        },
+
+        appendDataToSheet: async () => {
+          const state = get();
+
+          const sheetId = state.sheetId;
+          const seletedSheet = state.selectedSheet;
+
+          const records = state.tradeInputs.fields;
+
+          const req = records.reduce(
+            (acc, r) => {
+              if (r.type === "dropdown") {
+                acc.dropdowns[r.label] = r.options;
+              } else {
+                acc.values[r.label] = r.value;
+              }
+              acc.columnMap[r.label] = r.mappedColumn;
+
+              return acc;
+            },
+            { dropdowns: {}, values: {}, columnMap: {} }
           );
 
-          const removeMsg = () =>
-            setTimeout(
-              () =>
-                set((s) => {
-                  s.showMsg = false;
-                }),
-              4000
-            );
+          req.sheetName = seletedSheet;
 
-          if (res.status === 200) {
-            const data = await res.json();
+          const res = await fetch(
+            `http://localhost:8080/api/sheets/${sheetId}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(req),
+            }
+          );
 
-            set((s) => {
-              s.sheetStatus = "CONNECTED";
-              s.sheetNames = data;
-              s.showMsg = true;
-            });
-            removeMsg();
-          } else {
-            set((s) => {
-              s.sheetStatus = "ERROR";
-              s.showMsg = true;
-            });
-            removeMsg();
-          }
+          const parsedRes = await res.json();
+
+          state.showToast(
+            parsedRes.success ? "success" : "error",
+            parsedRes.message
+          );
         },
       }),
       { autoFreeze: false }

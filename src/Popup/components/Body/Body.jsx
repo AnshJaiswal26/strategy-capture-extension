@@ -4,6 +4,7 @@ import AllCapturesTab from "./components/AllCapturesTab/AllCapturesTab";
 import CalculatorTab from "./components/CalculatorTab/CalculatorTab";
 import "./Body.css";
 import SheetsTab from "./components/SheetsTab";
+import { Toast } from "@/components";
 
 export default function Body({ updateStore }) {
   const activeTabIndex = useExtensionStore((s) => s.activeTabIndex);

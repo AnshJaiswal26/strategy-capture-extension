@@ -3,7 +3,7 @@ import { useExtensionStore } from "@store";
 import { Header, Body, Footer } from "./components";
 import "./Popup.css";
 import LoginForm from "./components/LoginForm/LoginForm";
-import { Loading, TabSelector } from "@components";
+import { Loading, TabSelector, Toast } from "@components";
 
 export default function Popup() {
   const popupRef = useRef(null);
@@ -22,6 +22,7 @@ export default function Popup() {
         display: isPopupOpen ? "block" : "none",
       }}
     >
+      <Toast />
       <Header updateStore={updateStore} popupRef={popupRef} />
 
       {!userLoggedIn ? (

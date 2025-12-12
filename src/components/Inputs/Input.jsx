@@ -1,7 +1,15 @@
 import { useExtensionStore } from "@store";
 import "./Input.css";
 
-function Input({ label, type, options, selector, onChange, placeholder }) {
+function Input({
+  label,
+  type,
+  options,
+  selector,
+  onChange,
+  placeholder,
+  title,
+}) {
   const value =
     typeof selector === "function" ? useExtensionStore(selector) : selector;
 
@@ -31,6 +39,7 @@ function Input({ label, type, options, selector, onChange, placeholder }) {
             </select>
           ) : (
             <input
+              title={title === true ? value : title}
               className="backtesting-popup-input"
               type={type ?? "text"}
               step={type === "time" ? 1 : ""}
