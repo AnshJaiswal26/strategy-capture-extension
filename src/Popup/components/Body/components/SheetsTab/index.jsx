@@ -1,9 +1,5 @@
-import { useExtensionStore } from "@store";
 import { SheetIdInput } from "./SheetIdInput";
 import { SheetList } from "./SheetList";
-import { Button, ColumnPicker } from "@components";
-import { ArrowLeft, Trash2 } from "lucide-react";
-import "./SheetsTab.css";
 
 export default function SheetsTab({ updateStore }) {
   return (

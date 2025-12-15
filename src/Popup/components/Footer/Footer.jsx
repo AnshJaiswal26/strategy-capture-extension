@@ -23,6 +23,7 @@ export default function Footer({ updateStore }) {
 
 function Tab1Buttons({ updateStore, isEditing }) {
   const [loading, setLoading] = useState(false);
+  const isSheetEmpty = useExtensionStore((s) => s.selectedSheetIndex === null);
 
   return (
     <div className="footer-btn-wrapper space">
@@ -37,7 +38,9 @@ function Tab1Buttons({ updateStore, isEditing }) {
       /> */}
       <Button
         text="Export to sheets"
+        title={isSheetEmpty ? "Connect to sheet" : ""}
         type="hollow"
+        disable={isSheetEmpty}
         onClick={async () => {
           setLoading(true);
           await useExtensionStore.getState().appendDataToSheet();

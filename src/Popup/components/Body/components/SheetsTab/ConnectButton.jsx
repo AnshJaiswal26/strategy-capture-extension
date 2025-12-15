@@ -10,11 +10,13 @@ export const ConnectButton = ({ updateStore }) => {
     updateStore((s) => {
       s.sheetStatus = "DISCONNECTED";
       s.sheetId = "";
-      s.sheetNames = [];
-      s.selectedSheet = "";
+      s.sheets = [];
+      s.selectedSheetIndex = null;
     });
 
-    useExtensionStore.getState().showToast("success", "Sheet Disconnected");
+    useExtensionStore
+      .getState()
+      .showToast("success", "Google sheets disconnected");
   };
 
   return (

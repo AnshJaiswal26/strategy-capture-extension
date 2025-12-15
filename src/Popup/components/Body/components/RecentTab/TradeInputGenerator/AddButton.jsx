@@ -49,6 +49,7 @@ export default function AddButton({ updateStore }) {
     const payload = {
       label,
       type,
+      mappedColumn: s.tradeInputs.fields.length,
       ...(updatingIndex === null && {
         value: ["date", "time"].includes(type) ? timeAndDate(type) : 0,
         mappedWith,
@@ -64,8 +65,7 @@ export default function AddButton({ updateStore }) {
       resetInputs(s);
     } else {
       s.tradeInputs.fields.push(payload);
-      s.uniqueLabels[payload.label].count =
-        (s.uniqueLabels?.[payload.label]?.count ?? 0) + 1;
+      s.columnCounter += 1;
     }
 
     highlightRow(updatingIndex !== null ? updatingIndex + 1 : null);

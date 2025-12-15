@@ -1,14 +1,14 @@
 import { useExtensionStore } from "@store";
-import { ArrowRight, Check, Sheet } from "lucide-react";
+import { Check, Sheet } from "lucide-react";
 
 export const SheetList = ({ updateStore }) => {
-  const sheetNames = useExtensionStore((s) => s.sheetNames);
-  const selectedSheet = useExtensionStore((s) => s.selectedSheet);
+  const sheets = useExtensionStore((s) => s.sheets);
+  const selectedSheetIndex = useExtensionStore((s) => s.selectedSheetIndex);
   const sheetStatus = useExtensionStore((s) => s.sheetStatus);
 
   if (sheetStatus === "DISCONNECTED") return null;
 
-  if (sheetNames.length === 0) {
+  if (sheets.length === 0) {
     return <span className="no-input-found">No sheets found</span>;
   }
 
@@ -16,15 +16,17 @@ export const SheetList = ({ updateStore }) => {
     <>
       <label className="label">Select Sheet</label>
       <div className="sheet-list">
-        {sheetNames.map((name, i) => (
+        {sheets.map(({ name }, i) => (
           <div
             key={i}
             onClick={() =>
               updateStore((s) => {
-                s.selectedSheet = name;
+                s.selectedSheetIndex = i;
               })
             }
-            className={`sheet-item ${selectedSheet === name ? "selected" : ""}`}
+            className={`sheet-item ${
+              selectedSheetIndex === i ? "selected" : ""
+            }`}
           >
             <div>
               <Sheet size={18} />
@@ -32,7 +34,7 @@ export const SheetList = ({ updateStore }) => {
                 <span>{name}</span>
               </div>
             </div>
-            {selectedSheet === name && (
+            {selectedSheetIndex === i && (
               <Check size={18} className="check-icon" />
             )}
           </div>

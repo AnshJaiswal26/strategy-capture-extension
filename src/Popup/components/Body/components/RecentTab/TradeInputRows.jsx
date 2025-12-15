@@ -35,7 +35,7 @@ export default function TradeInputRows({ updateStore }) {
 function TradeInputsGrid({ updateStore }) {
   const [drag, setDrag] = useState({ start: null, over: null });
   const tradeInputs = useExtensionStore((s) => s.tradeInputs);
-  const selectedSheet = useExtensionStore((s) => s.selectedSheet);
+  const selectedSheetIndex = useExtensionStore((s) => s.selectedSheetIndex);
 
   const handleReorder = (from, to) => {
     if (drag.start === null && drag.over === null) return;
@@ -85,7 +85,7 @@ function TradeInputsGrid({ updateStore }) {
         <div className="filler" />
       )}
       <ColumnPicker
-        disabled={selectedSheet === ""}
+        disabled={selectedSheetIndex === null}
         selector={(s) => s.tradeInputs.fields[index].mappedColumn}
         onChange={(v) =>
           updateStore((s) => {

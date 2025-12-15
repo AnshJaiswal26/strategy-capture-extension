@@ -3,9 +3,12 @@
 @import "./components/Label/Label.css";
 @import "./components/Loading/Loading.css";
 @import "./components/TopDownSlider/TopDownSlider.css";
-@import "./Popup/components/LoginForm/LoginForm.css";
 @import "./components/TabSelector/TabSelector.css";
 @import "./components/Toast/Toast.css";
+@import "./components/MoreButton/MoreButton.css";
+@import "./components/ColumnPicker/ColumnPicker.css";
+
+@import "./Popup/components/LoginForm/LoginForm.css";
 
 @import "./Popup/components/Body/Body.css";
 @import "./Popup/Popup.css";

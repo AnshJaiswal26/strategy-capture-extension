@@ -6,9 +6,22 @@ import { highlightRow } from "@/utils";
 
 function chromeStorageWrapper() {
   return {
-    getItem: chrome.storage.local.get,
-    setItem: chrome.storage.local.set,
-    removeItem: chrome.storage.local.remove,
+    getItem: (name) =>
+      new Promise((resolve) => {
+        chrome.storage.local.get([name], (result) => {
+          resolve(result[name] ?? null);
+        });
+      }),
+
+    setItem: (name, value) =>
+      new Promise((resolve) => {
+        chrome.storage.local.set({ [name]: value }, resolve);
+      }),
+
+    removeItem: (name) =>
+      new Promise((resolve) => {
+        chrome.storage.local.remove(name, resolve);
+      }),
   };
 }
 
@@ -43,13 +56,6 @@ export const useExtensionStore = create(
         editingIndex: null,
         allCapturesUpdatingIdx: 0,
         isEdit: false,
-        uniqueLabels: {
-          "Demo Sheet": {
-            Date: { type: "date", count: 1, mappedColumn: "A" },
-            Day: { type: "text", count: 1, mappedColumn: "B" },
-            Avg: { type: "text", count: 1, mappedColumn: "B" },
-          },
-        },
 
         // login (temporary)
         userLoggedIn: true,
@@ -57,9 +63,9 @@ export const useExtensionStore = create(
         // sheets
         sheetStatus: "",
         sheetId: "",
-        sheetNames: [],
-        selectedSheet: "",
-        sheetColumnMap: {},
+        sheets: [],
+        selectedSheetIndex: null,
+        columnCounter: 0,
 
         toasts: [],
 
@@ -71,7 +77,7 @@ export const useExtensionStore = create(
             cb(s);
           }),
 
-        showToast: (type = "info", message, duration = 3000) =>
+        showToast: (type = "info", message, duration = 5000) =>
           set((state) => {
             const id = Date.now() + Math.random();
             const newToast = { id, type, message, duration };
@@ -214,11 +220,9 @@ export const useExtensionStore = create(
           );
           const parsedRes = await res.json();
 
-          console.log(parsedRes);
-
           if (parsedRes.success) {
             set((s) => {
-              s.sheetNames = parsedRes.data;
+              s.sheets = parsedRes.data;
             });
           }
           set((s) => {
@@ -233,29 +237,23 @@ export const useExtensionStore = create(
         appendDataToSheet: async () => {
           const state = get();
 
-          const sheetId = state.sheetId;
-          const seletedSheet = state.selectedSheet;
+          const spreadsheetId = state.sheetId;
+          const sheetIndex = state.selectedSheetIndex;
+          const sheet = state.sheets[sheetIndex];
 
           const records = state.tradeInputs.fields;
 
-          const req = records.reduce(
-            (acc, r) => {
-              if (r.type === "dropdown") {
-                acc.dropdowns[r.label] = r.options;
-              } else {
-                acc.values[r.label] = r.value;
-              }
-              acc.columnMap[r.label] = r.mappedColumn;
-
+          const req = {
+            sheetName: sheet.name,
+            sheetId: sheet.id,
+            columnMap: records.reduce((acc, r) => {
+              acc[r.mappedColumn] = r;
               return acc;
-            },
-            { dropdowns: {}, values: {}, columnMap: {} }
-          );
-
-          req.sheetName = seletedSheet;
+            }, {}),
+          };
 
           const res = await fetch(
-            `http://localhost:8080/api/sheets/${sheetId}`,
+            `http://localhost:8080/api/sheets/${spreadsheetId}`,
             {
               method: "POST",
               headers: {
@@ -288,8 +286,8 @@ export const useExtensionStore = create(
           riskAmount: state.riskAmount,
           sheetId: state.sheetId,
           sheetStatus: state.sheetStatus,
-          sheetNames: state.sheetNames,
-          selectedSheet: state.selectedSheet,
+          sheets: state.sheets,
+          selectedSheetIndex: state.selectedSheetIndex,
         });
 
         return cloned;

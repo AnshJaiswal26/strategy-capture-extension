@@ -51,7 +51,7 @@ export function injectButtonInIframe(button) {
           console.log("Toolbar found, injecting button");
           clearInterval(injectorInterval);
 
-          injectStyles(contentDocument, buttonCss);
+          injectStyle(contentDocument, buttonCss);
 
           window.addEventListener("message", (event) => {
             if (

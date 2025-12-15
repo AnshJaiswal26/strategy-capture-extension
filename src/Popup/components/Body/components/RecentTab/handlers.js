@@ -62,6 +62,16 @@ export const handleChange = (field, value, s, index = undefined) => {
       });
     },
 
+    Date: () => {
+      s.tradeInputs.fields.forEach((r) => {
+        if (r.mappedWith === "Date") r.value = value;
+        if (r.mappedWith === "Day")
+          r.value = new Date(value).toLocaleDateString("en-US", {
+            weekday: "long",
+          });
+      });
+    },
+
     default: (s) => {
       if (index !== undefined) {
         s.tradeInputs.fields[index].value = value;
@@ -96,9 +106,4 @@ export const handleEdit = (updateStore, input, index) => {
 export const handleDelete = (updateStore, index) =>
   updateStore((s) => {
     s.tradeInputs.fields.splice(index, 1);
-    const label = s.tradeInputs.fields[index].label;
-    const freq = s.uniqueLabels[label].count - 1;
-    if (freq === 0) {
-      delete s.uniqueLabels[label];
-    } else s.uniqueLabels[label].count = freq;
   });
